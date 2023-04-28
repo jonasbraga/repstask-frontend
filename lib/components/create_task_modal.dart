@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reptask/controllers/task_controller.dart';
 
 class CreateTaskModal extends StatefulWidget {
   const CreateTaskModal({Key? key}) : super(key: key);
@@ -96,7 +97,9 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
           height: MediaQuery.of(context).size.height / 20,
           margin: const EdgeInsets.only(bottom: 36),
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              criarTask();
+            },
             style: TextButton.styleFrom(
               backgroundColor: const Color.fromRGBO(70, 4, 138, 1),
               shape: RoundedRectangleBorder(
@@ -112,5 +115,10 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
         )
       ],
     );
+  }
+
+  criarTask() {
+
+    TaskController().createTask(titulo: taskTitle, pontos: taskPoints, descricao: taskDescription, responsavel: responsavelSelected);
   }
 }
