@@ -1,22 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/controllers/task_controller.dart';
 
+class Task {
+  int? id;
+  String? titulo;
+  int? pontos;
+  String? responsavel;
+  String? descricao;
+
+  Task({this.id, this.titulo, this.pontos, this.responsavel, this.descricao});
+}
+
 class CreateTaskModal extends StatefulWidget {
-  const CreateTaskModal({Key? key}) : super(key: key);
+  const CreateTaskModal({super.key, this.editData});
+  final Task? editData;
 
   @override
   State<CreateTaskModal> createState() => _CreateTaskModalState();
 }
 
 class _CreateTaskModalState extends State<CreateTaskModal> {
-  String taskTitle = '';
-  int taskPoints = 0;
-  String? taskDescription = '';
-  String responsavelSelected = "1";
+  // late Task responsaveis;
+  late String taskTitle;
+  late int taskPoints;
+  late String taskDescription;
+  late String responsavelSelected;
+  final TextEditingController _taskTitleController = TextEditingController();
+  final TextEditingController _taskPointsController = TextEditingController();
+  final TextEditingController _taskDescriptionController =
+      TextEditingController();
   List<DropdownMenuItem<String>> responsaveis = [
     const DropdownMenuItem(value: "1", child: Text("Barbosa")),
     const DropdownMenuItem(value: "2", child: Text("João Pedro"))
   ]; //Alterar o get de responsáveis
+
+  @override
+  void initState() {
+    super.initState();
+    taskTitle = widget.editData?.titulo ?? '';
+    _taskTitleController.text = taskTitle;
+    taskPoints = widget.editData?.pontos ?? 0;
+    _taskPointsController.text = taskPoints.toString();
+    taskDescription = widget.editData?.descricao ?? '';
+    _taskDescriptionController.text = taskDescription;
+    responsavelSelected = widget.editData?.responsavel ?? '1';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +61,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
         Container(
           margin: const EdgeInsets.only(bottom: 12),
           child: TextFormField(
+            controller: _taskTitleController,
             onChanged: (value) => setState(() {
               taskTitle = value;
             }),
@@ -47,6 +76,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
           margin: const EdgeInsets.only(bottom: 12),
           child: TextFormField(
             keyboardType: TextInputType.number,
+            controller: _taskPointsController,
             onChanged: (value) => setState(() {
               if (!(int.tryParse(value) == null)) {
                 taskPoints = int.parse(value);
@@ -82,6 +112,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
             minLines: 3,
             keyboardType: TextInputType.multiline,
             maxLines: null,
+            controller: _taskDescriptionController,
             onChanged: (value) => setState(() {
               taskDescription = value;
             }),
@@ -97,28 +128,40 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
           height: MediaQuery.of(context).size.height / 20,
           margin: const EdgeInsets.only(bottom: 36),
           child: TextButton(
-            onPressed: () {
-              criarTask();
-            },
-            style: TextButton.styleFrom(
-              backgroundColor: const Color.fromRGBO(70, 4, 138, 1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4),
+              onPressed: () {
+                criarTask();
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: const Color.fromRGBO(70, 4, 138, 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
               ),
-            ),
-            child: const Text(
-              'CRIAR',
-              style: TextStyle(
-                  color: Colors.white, letterSpacing: 1.25, fontSize: 16),
-            ),
-          ),
+              child: widget.editData != null
+                  ? const Text(
+                      'ATUALIZAR',
+                      style: TextStyle(
+                          color: Colors.white,
+                          letterSpacing: 1.25,
+                          fontSize: 16),
+                    )
+                  : const Text(
+                      'CRIAR',
+                      style: TextStyle(
+                          color: Colors.white,
+                          letterSpacing: 1.25,
+                          fontSize: 16),
+                    )),
         )
       ],
     );
   }
 
   criarTask() {
-
-    TaskController().createTask(titulo: taskTitle, pontos: taskPoints, descricao: taskDescription, responsavel: responsavelSelected);
+    TaskController().createTask(
+        titulo: taskTitle,
+        pontos: taskPoints,
+        descricao: taskDescription,
+        responsavel: responsavelSelected);
   }
 }
