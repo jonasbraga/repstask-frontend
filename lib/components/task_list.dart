@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/create_task_modal.dart';
 import '../components/bottom_modal.dart';
+import '../models/comments_model.dart';
+import 'create_comments_modal.dart';
 
 class ListViewHomeLayout extends StatefulWidget {
   const ListViewHomeLayout({super.key, required this.displayContent});
@@ -52,45 +54,62 @@ class _ListViewHome extends State<ListViewHomeLayout> {
                     if (widget.displayContent)
                       IconButton(
                         icon: const Icon(Icons.arrow_forward_ios_rounded),
-                        onPressed: () {},
+                        onPressed: () {
+                          showModal(
+                            context,
+                            CreateCommentsModal(
+                                disabledData: Comments(
+                              id: index,
+                              titulo: titles[index],
+                              pontos: 2,
+                              descricao: subtitles[index],
+                            )),
+                          );
+                        },
                       )
                     else
-                      PopupMenuButton<String>(
-                        onSelected: (value) {
-                          // Handle menu item selection here
-                          switch (value) {
-                            case "option1":
-                              showModal(
-                                  context,
-                                  CreateTaskModal(
-                                    editData: Task(
-                                        id: index,
-                                        titulo: titles[index],
-                                        pontos: 2,
-                                        responsavel: '2',
-                                        descricao: subtitles[index]),
-                                  ));
-                              break;
-                            case "option2":
-                              print("Option 1 selected");
-                              break;
-                          }
+                      StatefulBuilder(
+                        builder: (context, setState) {
+                          return PopupMenuButton<String>(
+                            onSelected: (value) {
+                              // Handle menu item selection here
+                              switch (value) {
+                                case "option1":
+                                  showModal(
+                                      context,
+                                      Column(children: [
+                                        CreateTaskModal(
+                                            editData: Task(
+                                                id: index,
+                                                titulo: titles[index],
+                                                pontos: 2,
+                                                responsavel: '2',
+                                                descricao: subtitles[index])),
+                                      ]));
+                                  ;
+                                  break;
+                                case "option2":
+                                  print("Option 1 selected");
+                                  break;
+                              }
+                            },
+                            itemBuilder: (BuildContext context) => [
+                              const PopupMenuItem<String>(
+                                value: "option1",
+                                child: ListTile(
+                                  title: Text('Editar'),
+                                  trailing: Icon(Icons.create_rounded),
+                                ),
+                              ),
+                              const PopupMenuItem<String>(
+                                value: "option2",
+                                child: ListTile(
+                                    title: Text('Excluir'),
+                                    trailing: Icon(Icons.delete)),
+                              ),
+                            ],
+                          );
                         },
-                        itemBuilder: (BuildContext context) => [
-                          const PopupMenuItem<String>(
-                            value: "option1",
-                            child: ListTile(
-                              title: Text('Editar'),
-                              trailing: Icon(Icons.create_rounded),
-                            ),
-                          ),
-                          const PopupMenuItem<String>(
-                            value: "option2",
-                            child: ListTile(
-                                title: Text('Excluir'),
-                                trailing: Icon(Icons.delete)),
-                          ),
-                        ],
                       ),
                   ],
                 ),
