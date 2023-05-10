@@ -25,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: const <Widget>[
           FilterTasks(),
           Expanded(
-            child: ListViewHomeLayout(displayContent: false),
+            child: ListViewHomeLayout(displayContent: true),
           ),
         ],
       ),
