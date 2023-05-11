@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:reptask/configs/config.dart';
@@ -8,16 +9,17 @@ class TaskController {
     final Uri uri = Uri.parse('http://$backendAdress/tasks');
     final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
 
-    var body = {
+    var data = {
       'title': newTask.titulo,
       'description': newTask.descricao,
-      'deadline': newTask.prazo,
+      'deadline': newTask.prazo.toString(),
       'score': {
         'responsible_user': newTask.responsavel,
         'value': newTask.pontos,
         'finished': false
       }
     };
+    var body = json.encode(data);
 
     final response = await http.post(uri, headers: headers, body: body);
   }
