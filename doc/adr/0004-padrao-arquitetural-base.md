@@ -1,24 +1,26 @@
-# 4. Utilização do padrão cliente-servidor
+# 4. Utilização do padrão MVC como CS 3 camadas
 
-Date: 2023-05-09
+Date: 2023-05-11
 
 ## Status
 
 Aceito
 
-## Context
+## Contexto
 
-Foi necessário discutirmos sobre a escolha do padrão arquitetural do projeto pensando em facilitar o desenvolvimento das partes do sistema. Com isso foi levantado a organização dividida entre a parte do servidor e do cliente, separando o front-end (utilização do dart) e o back-end (API em nodeJS). Com isso, os membros foram direcionados para áreas que já tinham familiaridade com ela. Dessa forma, não houveram outras possibilidades mencionadas para uso.
+Após reavaliarmos discutimos que arquitetura podemos aderir que não apenas a de cliente-servidor simples para isso foram levantadas outras arquiteturas que condissessem ao modo do desenvolvimento, com um front-end feito inteiramente em Flutter, um back-end separado em nodeJS e um banco. Para isso notou-se que se encaixaria um modelo MVC como Cliente Servidor de 3 Camadas.
 
 ## Decision
 
-Seria possível trabalhar com outros modelos de arquiteturas, por exemplo utilizando MVC e utilizando um backend também em flutter, no entanto, essa e qualquer outra escolha de arquitetura resultaria na necessidade de uma maior capacitação da equipe, pois como já apresentado, há familiaridade com o modelo cliente-servidor assim como o desenvolvimento de APIs em NodeJS. E pensando nessa capacitação, o tempo é um limitador, logo reduzimos as opções de explorar o desconhecido para trabalhar com esta arquitetura conhecida.
+Com isso foi decidido que o desenvolvimento da aplicação em Flutter seguirá um design arquitetural de modelo MVC, separando corretamente as Views apenas com componentes de UI que será a interação do usuário, Controller e Models, desse modo mantendo o projeto mais organizado e de melhor manutenção. O Backend que terá suas funções invodas apenas através das Controllers, ficará responsável pela regra de negócio do sistema, e sendo o único que terá interação com o Banco de Dados.
 
 ## Consequences
 
 Positivas:
-- Familiaridade com os meios de disponibilização do serviço (deploy).
+- Maior coesão para o nosso sistema visto que cada parte do projeto terá responsabilidades mais bem definidas
+- Facilidade de Manutenção e Reusabilidade
 
 Negativas: 
-- Toda alteração no Frontend é necessário a realização de build de toda a aplicação e disponibilizar uma nova versão. 
+- Reavaliação do código já implementado e refatoração para garantir a modularidade
+- Adaptação dos membros do desenvolvimento a seguirem o modelo MVC para aqueles não acostumados a desenvolverem nessa arquitetura
 
