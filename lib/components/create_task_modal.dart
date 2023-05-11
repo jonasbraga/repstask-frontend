@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/controllers/task_controller.dart';
-
-class Task {
-  int? id;
-  String? titulo;
-  int? pontos;
-  String? responsavel;
-  String? descricao;
-
-  Task({this.id, this.titulo, this.pontos, this.responsavel, this.descricao});
-}
+import 'package:reptask/models/task_model.dart';
 
 class CreateTaskModal extends StatefulWidget {
   const CreateTaskModal({super.key, this.editData});
-  final Task? editData;
+  final TaskModel? editData;
 
   @override
   State<CreateTaskModal> createState() => _CreateTaskModalState();
@@ -129,7 +120,8 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
           margin: const EdgeInsets.only(bottom: 36),
           child: TextButton(
               onPressed: () {
-                criarTask();
+                widget.editData != null ? updateTask() : criarTask();
+                Navigator.pop(context);
               },
               style: TextButton.styleFrom(
                 backgroundColor: const Color.fromRGBO(70, 4, 138, 1),
@@ -158,10 +150,13 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
   }
 
   criarTask() {
-    TaskController().createTask(
+    TaskController().createTask(TaskModel(
         titulo: taskTitle,
         pontos: taskPoints,
         descricao: taskDescription,
-        responsavel: responsavelSelected);
+        prazo: DateTime.now(), // Arrumar o prazo para uma variavel
+        responsavel: responsavelSelected));
   }
+
+  updateTask() {}
 }

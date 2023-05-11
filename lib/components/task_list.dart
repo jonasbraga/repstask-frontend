@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/create_task_modal.dart';
+import 'package:reptask/models/task_model.dart';
 import '../components/bottom_modal.dart';
 
 class ListViewHomeLayout extends StatefulWidget {
@@ -63,7 +64,7 @@ class _ListViewHome extends State<ListViewHomeLayout> {
                               showModal(
                                   context,
                                   CreateTaskModal(
-                                    editData: Task(
+                                    editData: TaskModel(
                                         id: index,
                                         titulo: titles[index],
                                         pontos: 2,
