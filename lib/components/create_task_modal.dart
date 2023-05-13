@@ -1,32 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:reptask/controllers/task_controller.dart';
-
-class Task {
-  int? id;
-  String? titulo;
-  int? pontos;
-  String? responsavel;
-  String? descricao;
-
-  Task({this.id, this.titulo, this.pontos, this.responsavel, this.descricao});
-}
+import 'package:reptask/models/task_model.dart';
 
 class CreateTaskModal extends StatefulWidget {
-  const CreateTaskModal({super.key, this.editData});
-  final Task? editData;
+  const CreateTaskModal({super.key, this.taskDataSended});
+  final TaskModel? taskDataSended;
 
   @override
   State<CreateTaskModal> createState() => _CreateTaskModalState();
 }
 
 class _CreateTaskModalState extends State<CreateTaskModal> {
-  // late Task responsaveis;
-  late String taskTitle;
-  late int taskPoints;
-  late String taskDescription;
-  late String responsavelSelected;
+  late TaskModel taskData;
   final TextEditingController _taskTitleController = TextEditingController();
   final TextEditingController _taskPointsController = TextEditingController();
+  final TextEditingController _taskDeadlineController = TextEditingController();
   final TextEditingController _taskDescriptionController =
       TextEditingController();
   List<DropdownMenuItem<String>> responsaveis = [
@@ -37,13 +26,18 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
   @override
   void initState() {
     super.initState();
-    taskTitle = widget.editData?.titulo ?? '';
-    _taskTitleController.text = taskTitle;
-    taskPoints = widget.editData?.pontos ?? 0;
-    _taskPointsController.text = taskPoints.toString();
-    taskDescription = widget.editData?.descricao ?? '';
-    _taskDescriptionController.text = taskDescription;
-    responsavelSelected = widget.editData?.responsavel ?? '1';
+    taskData = widget.taskDataSended ??
+        TaskModel(
+            titulo: '',
+            pontos: 0,
+            responsavel: '1',
+            prazo: DateTime.now(),
+            descricao: '');
+    _taskTitleController.text = taskData.titulo;
+    _taskPointsController.text = taskData.pontos.toString();
+    _taskDeadlineController.text =
+        DateFormat('dd/MM/yyyy').format(taskData.prazo);
+    _taskDescriptionController.text = taskData.descricao ?? '';
   }
 
   @override
@@ -63,7 +57,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
           child: TextFormField(
             controller: _taskTitleController,
             onChanged: (value) => setState(() {
-              taskTitle = value;
+              taskData.titulo = value;
             }),
             decoration: const InputDecoration(
                 labelText: 'Título',
@@ -79,7 +73,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
             controller: _taskPointsController,
             onChanged: (value) => setState(() {
               if (!(int.tryParse(value) == null)) {
-                taskPoints = int.parse(value);
+                taskData.pontos = int.parse(value);
               }
             }),
             decoration: const InputDecoration(
@@ -91,8 +85,36 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
         ),
         Container(
           margin: const EdgeInsets.only(bottom: 12),
+          child: TextFormField(
+            keyboardType: TextInputType.datetime,
+            controller: _taskDeadlineController,
+            onTap: () async {
+              DateTime? pickedDate = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1950),
+                  lastDate: DateTime(2100));
+
+              if (pickedDate != null) {
+                String formattedDate =
+                    DateFormat('dd/MM/yyyy').format(pickedDate);
+                setState(() {
+                  _taskDeadlineController.text = formattedDate;
+                  taskData.prazo = pickedDate;
+                });
+              } else {}
+            },
+            decoration: const InputDecoration(
+                labelText: 'Prazo',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder()),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(bottom: 12),
           child: DropdownButtonFormField(
-            value: responsavelSelected,
+            value: taskData.responsavel,
             items: responsaveis,
             decoration: const InputDecoration(
                 labelText: 'Responsável',
@@ -101,7 +123,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
                 border: OutlineInputBorder()),
             onChanged: (String? newValue) {
               setState(() {
-                responsavelSelected = newValue!;
+                taskData.responsavel = newValue!;
               });
             },
           ),
@@ -114,7 +136,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
             maxLines: null,
             controller: _taskDescriptionController,
             onChanged: (value) => setState(() {
-              taskDescription = value;
+              taskData.descricao = value;
             }),
             decoration: const InputDecoration(
                 labelText: 'Descrição',
@@ -129,7 +151,8 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
           margin: const EdgeInsets.only(bottom: 36),
           child: TextButton(
               onPressed: () {
-                criarTask();
+                widget.taskDataSended != null ? updateTask() : criarTask();
+                Navigator.pop(context);
               },
               style: TextButton.styleFrom(
                 backgroundColor: const Color.fromRGBO(70, 4, 138, 1),
@@ -137,7 +160,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
-              child: widget.editData != null
+              child: widget.taskDataSended != null
                   ? const Text(
                       'ATUALIZAR',
                       style: TextStyle(
@@ -158,10 +181,8 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
   }
 
   criarTask() {
-    TaskController().createTask(
-        titulo: taskTitle,
-        pontos: taskPoints,
-        descricao: taskDescription,
-        responsavel: responsavelSelected);
+    TaskController().createTask(taskData);
   }
+
+  updateTask() {}
 }

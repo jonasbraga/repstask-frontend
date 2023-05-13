@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/create_task_modal.dart';
+import 'package:reptask/models/task_model.dart';
 import '../components/bottom_modal.dart';
 import '../models/comments_model.dart';
 import 'create_comments_modal.dart';
@@ -79,11 +80,12 @@ class _ListViewHome extends State<ListViewHomeLayout> {
                                       context,
                                       Column(children: [
                                         CreateTaskModal(
-                                            editData: Task(
+                                            taskDataSended: TaskModel(
                                                 id: index,
                                                 titulo: titles[index],
                                                 pontos: 2,
                                                 responsavel: '2',
+                                                prazo: DateTime.now(),
                                                 descricao: subtitles[index])),
                                       ]));
                                   ;
