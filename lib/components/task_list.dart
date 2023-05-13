@@ -64,11 +64,12 @@ class _ListViewHome extends State<ListViewHomeLayout> {
                               showModal(
                                   context,
                                   CreateTaskModal(
-                                    editData: TaskModel(
+                                    taskDataSended: TaskModel(
                                         id: index,
                                         titulo: titles[index],
                                         pontos: 2,
                                         responsavel: '2',
+                                        prazo: DateTime.now(),
                                         descricao: subtitles[index]),
                                   ));
                               break;

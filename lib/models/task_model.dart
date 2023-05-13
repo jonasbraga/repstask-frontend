@@ -1,19 +1,21 @@
 class TaskModel {
-  final int? id;
-  final String titulo;
-  final int pontos;
-  final String? descricao;
-  final DateTime? prazo;
-  final String responsavel;
+  int? id;
+  String titulo;
+  int pontos;
+  String? descricao;
+  DateTime prazo;
+  String responsavel;
 
-  TaskModel(
-      {this.id,
-      required this.titulo,
-      required this.pontos,
-      this.descricao,
-      this.prazo,
-      required this.responsavel});
+  TaskModel({
+    required this.titulo,
+    required this.pontos,
+    required this.responsavel,
+    required this.prazo,
+    this.id,
+    this.descricao,
+  });
 
+  // JsonMethods
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     final titulo = json['title'];
     final pontos = json['value'];

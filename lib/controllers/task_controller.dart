@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:reptask/configs/config.dart';
 import 'package:reptask/models/task_model.dart';
 
@@ -12,7 +13,7 @@ class TaskController {
     var data = {
       'title': newTask.titulo,
       'description': newTask.descricao,
-      'deadline': newTask.prazo.toString(),
+      'deadline': DateFormat('yyyy-mm-dd').format(newTask.prazo),
       'score': {
         'responsible_user': newTask.responsavel,
         'value': newTask.pontos,
