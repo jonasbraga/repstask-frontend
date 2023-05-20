@@ -13,9 +13,9 @@ class TaskController {
     var data = {
       'title': newTask.titulo,
       'description': newTask.descricao,
-      'deadline': DateFormat('yyyy-mm-dd').format(newTask.prazo),
+      'deadline': DateFormat('yyyy-MM-dd').format(newTask.prazo),
       'score': {
-        'responsible_user': newTask.responsavel,
+        'responsible_user': int.parse(newTask.responsavel),
         'value': newTask.pontos,
         'finished': false
       }
