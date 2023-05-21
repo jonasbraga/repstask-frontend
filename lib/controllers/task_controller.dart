@@ -7,7 +7,7 @@ import 'package:reptask/models/task_model.dart';
 
 class TaskController {
   Future createTask(TaskModel newTask) async {
-    final Uri uri = Uri.parse('http://$backendAdress/tasks');
+    final Uri uri = Uri.parse('http://localhost:3000/tasks');
     final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
 
     var data = {
@@ -23,5 +23,32 @@ class TaskController {
     var body = json.encode(data);
 
     final response = await http.post(uri, headers: headers, body: body);
+  }
+
+  Future<List<TaskModel>> getTasks() async {
+    final response =
+        await http.get(Uri.parse('http://localhost:3000/tasks-all/1'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      var body = jsonDecode(response.body);
+      List<TaskModel> results = [];
+      body.forEach((taskJson) {
+        TaskModel task = TaskModel(
+            pontos: taskJson['value'],
+            prazo: DateTime.parse(taskJson['deadline']),
+            responsavel: taskJson['responsible_user'].toString(),
+            titulo: taskJson['title'],
+            descricao: taskJson['description'],
+            id: taskJson['id']);
+        results.add(task);
+      });
+      return results;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
   }
 }

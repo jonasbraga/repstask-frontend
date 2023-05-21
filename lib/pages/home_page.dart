@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/create_task_modal.dart';
-import 'package:reptask/utils/primary_color.dart';
 import '../components/bottom_modal.dart';
 import '../components/filter_task_component.dart';
 import '../components/task_list.dart';
@@ -21,11 +20,11 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        children: const <Widget>[
+      body: const Column(
+        children: <Widget>[
           FilterTasks(),
           Expanded(
-            child: ListViewHomeLayout(displayContent: true),
+            child: ListViewHomeLayout(displayContent: false),
           ),
         ],
       ),
