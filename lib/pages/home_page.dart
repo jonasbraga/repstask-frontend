@@ -20,8 +20,8 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const Column(
-        children: <Widget>[
+      body: Column(
+        children: const <Widget>[
           FilterTasks(),
           Expanded(
             child: ListViewHomeLayout(displayContent: false),

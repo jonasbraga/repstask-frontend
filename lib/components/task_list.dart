@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/create_task_modal.dart';
+import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/controllers/task_controller.dart';
 import 'package:reptask/models/task_model.dart';
 import '../components/bottom_modal.dart';
@@ -21,6 +22,9 @@ class _ListViewHome extends State<ListViewHomeLayout> {
   @override
   void initState() {
     super.initState();
+    refreshTaskPageStream.stream.listen((event) {
+      refreshPage();
+    });
     taksController
         .getTasks()
         .then((taskResults) => setState(() => taksList = taskResults));
