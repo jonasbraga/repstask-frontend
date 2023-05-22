@@ -1,3 +1,3 @@
 import 'dart:async';
 
-StreamController<void> refreshTaskPageStream = StreamController();
+StreamController<List<bool>?> refreshTaskPageStream = StreamController();

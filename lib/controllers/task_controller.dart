@@ -81,16 +81,18 @@ class TaskController {
       // then parse the JSON.
       var body = jsonDecode(response.body);
       List<TaskModel> results = [];
-      body.forEach((taskJson) {
-        TaskModel task = TaskModel(
-            pontos: taskJson['value'],
-            prazo: DateTime.parse(taskJson['deadline']),
-            responsavel: taskJson['responsible_user'].toString(),
-            titulo: taskJson['title'],
-            descricao: taskJson['description'],
-            id: taskJson['id']);
-        results.add(task);
-      });
+      if (body.length > 0) {
+        body.forEach((taskJson) {
+          TaskModel task = TaskModel(
+              pontos: taskJson['value'],
+              prazo: DateTime.parse(taskJson['deadline']),
+              responsavel: taskJson['responsible_user'].toString(),
+              titulo: taskJson['title'],
+              descricao: taskJson['description'],
+              id: taskJson['id']);
+          results.add(task);
+        });
+      }
       return results;
     } else {
       // If the server did not return a 200 OK response,
