@@ -184,5 +184,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
     TaskController().createTask(taskData);
   }
 
-  updateTask() {}
+  updateTask() {
+    TaskController().updateTask(taskData);
+  }
 }

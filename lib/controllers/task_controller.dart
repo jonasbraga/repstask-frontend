@@ -27,6 +27,31 @@ class TaskController {
     refreshTaskPageStream.sink.add(null);
   }
 
+  Future updateTask(TaskModel newTask) async {
+    var id = newTask.id.toString();
+    final Uri uri = Uri.parse('http://$backendAdress/tasks/$id');
+    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+
+    var data = {
+      'title': newTask.titulo,
+      'description': newTask.descricao,
+      'deadline': DateFormat('yyyy-MM-dd').format(newTask.prazo),
+      'score': {
+        'responsible_user': int.parse(newTask.responsavel),
+        'value': newTask.pontos,
+        'finished': false
+      }
+    };
+    var body = json.encode(data);
+
+    final response = await http.patch(uri, headers: headers, body: body);
+  }
+
+  Future deleteTask(int id) async {
+    final Uri uri = Uri.parse('http://$backendAdress/tasks/$id');
+    final response = await http.delete(uri);
+  }
+
   Future<List<TaskModel>> getTasks() async {
     final response =
         await http.get(Uri.parse('http://$backendAdress/tasks-all/1'));
