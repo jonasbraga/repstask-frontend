@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/controllers/task_controller.dart';
+import 'package:reptask/models/task_model.dart';
 import '../models/comments_model.dart';
 
 class CreateCommentsModal extends StatefulWidget {
-  const CreateCommentsModal({super.key, this.disabledData});
-  final Comments? disabledData;
+  const CreateCommentsModal({super.key, required this.taskData});
+  final TaskModel taskData;
 
   @override
   State<CreateCommentsModal> createState() => _CreateCommentsModalState();
@@ -12,25 +13,20 @@ class CreateCommentsModal extends StatefulWidget {
 
 class _CreateCommentsModalState extends State<CreateCommentsModal> {
   // late Task responsaveis;
-  late String taskTitle;
-  late int taskPoints;
-  late String taskDescription;
-  late String responsavelSelected;
+  late TaskModel taskData;
   final TextEditingController _taskTitleController = TextEditingController();
   final TextEditingController _taskPointsController = TextEditingController();
   final TextEditingController _taskDescriptionController =
       TextEditingController();
- //Alterar o get de responsáveis
+  //Alterar o get de responsáveis
 
   @override
   void initState() {
     super.initState();
-    taskTitle = widget.disabledData?.titulo ?? '';
-    _taskTitleController.text = taskTitle;
-    taskPoints = widget.disabledData?.pontos ?? 0;
-    _taskPointsController.text = taskPoints.toString();
-    taskDescription = widget.disabledData?.descricao ?? '';
-    _taskDescriptionController.text = taskDescription;
+    taskData = widget.taskData;
+    _taskTitleController.text = taskData.titulo;
+    _taskPointsController.text = taskData.pontos.toString();
+    _taskDescriptionController.text = taskData.descricao ?? '';
   }
 
   @override
@@ -45,46 +41,49 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
             size: 48,
           ),
         ),
-
         Container(
           height: 24,
-          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-            Text(taskTitle,
-            style: TextStyle(
-              fontSize: 24, 
-              fontWeight:FontWeight.w400, 
-              letterSpacing: 0.15,
-              color: Color.fromRGBO(0, 0, 0, 0.7)
-            ),),
-            CircleAvatar(
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              widget.taskData.titulo,
+              style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.15,
+                  color: Color.fromRGBO(0, 0, 0, 0.7)),
+            ),
+            const CircleAvatar(
               radius: 12,
               backgroundImage: NetworkImage(
-              'https://source.unsplash.com/50x50/?portrait',
+                'https://source.unsplash.com/50x50/?portrait',
               ),
             ),
           ]),
         ),
-        Row( mainAxisAlignment: MainAxisAlignment.start,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(taskPoints.toString()),
+            Text(taskData.pontos.toString()),
           ],
         ),
         Container(
           margin: const EdgeInsets.only(top: 9, bottom: 50),
           child: Column(
             children: [
-              TextField(controller: _taskDescriptionController,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                letterSpacing: 0.25,
-              ),
-              decoration: InputDecoration(
-                fillColor: Colors.white,
-                filled: true,
-              ),
-            )],
+              TextField(
+                controller: _taskDescriptionController,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.25,
+                ),
+                decoration: const InputDecoration(
+                  fillColor: Colors.white,
+                  filled: true,
+                ),
+              )
+            ],
           ),
         ),
         Container(
@@ -94,6 +93,7 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
           child: TextButton(
               onPressed: () {
                 Navigator.pop(context);
+                finishTask();
               },
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(8.0),
@@ -102,15 +102,20 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
-              child: Text(
-                      'FINALIZAR',
-                      style: TextStyle(
-                          color: Colors.white,
-                          letterSpacing: 1.25,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500),
-                    )),
-        )],
+              child: const Text(
+                'FINALIZAR',
+                style: TextStyle(
+                    color: Colors.white,
+                    letterSpacing: 1.25,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500),
+              )),
+        )
+      ],
     );
+  }
+
+  void finishTask() async {
+    await TaskController().finishTask(taskData);
   }
 }

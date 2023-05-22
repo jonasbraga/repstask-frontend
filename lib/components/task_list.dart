@@ -41,6 +41,12 @@ class _ListViewHome extends State<ListViewHomeLayout> {
             return Card(
                 key: ValueKey(index),
                 child: ListTile(
+                  onTap: () {
+                    showModal(
+                      context,
+                      CreateCommentsModal(taskData: taksList[index]),
+                    );
+                  },
                   title: Text(taksList[index].titulo),
                   subtitle: Text(taksList[index].pontos.toString()),
                   trailing: Wrap(
@@ -54,13 +60,7 @@ class _ListViewHome extends State<ListViewHomeLayout> {
                           onPressed: () {
                             showModal(
                               context,
-                              CreateCommentsModal(
-                                  disabledData: Comments(
-                                id: taksList[index].id,
-                                titulo: taksList[index].titulo,
-                                pontos: 2,
-                                descricao: taksList[index].descricao,
-                              )),
+                              CreateCommentsModal(taskData: taksList[index]),
                             );
                           },
                         )

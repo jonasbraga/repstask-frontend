@@ -52,6 +52,26 @@ class TaskController {
     final response = await http.delete(uri);
   }
 
+  Future finishTask(TaskModel taskToFinish) async {
+    var id = taskToFinish.id.toString();
+    final Uri uri = Uri.parse('http://$backendAdress/tasks/$id');
+    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+
+    var data = {
+      'title': taskToFinish.titulo,
+      'description': taskToFinish.descricao,
+      'deadline': DateFormat('yyyy-MM-dd').format(taskToFinish.prazo),
+      'score': {
+        'responsible_user': int.parse(taskToFinish.responsavel),
+        'value': taskToFinish.pontos,
+        'finished': true
+      }
+    };
+    var body = json.encode(data);
+
+    final response = await http.patch(uri, headers: headers, body: body);
+  }
+
   Future<List<TaskModel>> getTasks() async {
     final response =
         await http.get(Uri.parse('http://$backendAdress/tasks-all/1'));
