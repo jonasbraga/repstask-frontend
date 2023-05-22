@@ -81,7 +81,9 @@ class _ListViewHome extends State<ListViewHomeLayout> {
                                     ;
                                     break;
                                   case "option2":
-                                    print("Option 1 selected");
+                                    TaskController()
+                                        .deleteTask(taksList[index].id ?? 0);
+
                                     break;
                                 }
                               },
