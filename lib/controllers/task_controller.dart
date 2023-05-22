@@ -29,7 +29,7 @@ class TaskController {
 
   Future updateTask(TaskModel newTask) async {
     var id = newTask.id.toString();
-    final Uri uri = Uri.parse('http://localhost:3000/tasks/$id');
+    final Uri uri = Uri.parse('http://$backendAdress/tasks/$id');
     final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
 
     var data = {
@@ -48,7 +48,7 @@ class TaskController {
   }
 
   Future deleteTask(int id) async {
-    final Uri uri = Uri.parse('http://localhost:3000/tasks/$id');
+    final Uri uri = Uri.parse('http://$backendAdress/tasks/$id');
     final response = await http.delete(uri);
   }
 
