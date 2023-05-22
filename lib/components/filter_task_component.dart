@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/utils/primary_color.dart';
 
+import '../controllers/streams_controller.dart';
+
 class FilterTasks extends StatefulWidget {
   const FilterTasks({Key? key}) : super(key: key);
 
@@ -9,9 +11,9 @@ class FilterTasks extends StatefulWidget {
 }
 
 class _FilterTasks extends State<FilterTasks> {
-  bool _hasFavoriteBeenPressed = false;
-  bool _hasPendentsBeenPressed = false;
-  bool isSwitched = false;
+  bool _hasFinalizadoBeenPressed = false;
+  bool _hasPendentsBeenPressed = true;
+  bool _hasSelfTasks = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +31,12 @@ class _FilterTasks extends State<FilterTasks> {
             const Spacer(flex: 1),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: _hasFavoriteBeenPressed
-                    ? const MaterialStatePropertyAll(
-                        Color.fromRGBO(217, 217, 217, 1),
-                      )
-                    : MaterialStatePropertyAll(
+                backgroundColor: _hasFinalizadoBeenPressed
+                    ? MaterialStatePropertyAll(
                         primaryColor,
+                      )
+                    : const MaterialStatePropertyAll(
+                        Color.fromRGBO(217, 217, 217, 1),
                       ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -49,19 +51,24 @@ class _FilterTasks extends State<FilterTasks> {
               onPressed: () => {
                 setState(
                   () {
-                    _hasFavoriteBeenPressed = !_hasFavoriteBeenPressed;
+                    // Pendente ta selecionado? se sim, desmarca o pendente também.
+                    _hasFinalizadoBeenPressed = !_hasFinalizadoBeenPressed;
+                    if (_hasFinalizadoBeenPressed == _hasPendentsBeenPressed) {
+                      _hasPendentsBeenPressed = false;
+                    }
+                    notifyTaskList();
                   },
                 ),
               },
-              child: _hasFavoriteBeenPressed
+              child: _hasFinalizadoBeenPressed
                   ? (const Text('FINALIZADOS',
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 10,
                           fontWeight: FontWeight.bold)))
                   : (const Text('FINALIZADOS',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 10,
                           fontWeight: FontWeight.bold))),
             ),
@@ -69,11 +76,11 @@ class _FilterTasks extends State<FilterTasks> {
             ElevatedButton(
               style: ButtonStyle(
                 backgroundColor: _hasPendentsBeenPressed
-                    ? const MaterialStatePropertyAll(
-                        Color.fromRGBO(217, 217, 217, 1),
-                      )
-                    : MaterialStatePropertyAll(
+                    ? MaterialStatePropertyAll(
                         primaryColor,
+                      )
+                    : const MaterialStatePropertyAll(
+                        Color.fromRGBO(217, 217, 217, 1),
                       ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -89,28 +96,34 @@ class _FilterTasks extends State<FilterTasks> {
                 setState(
                   () {
                     _hasPendentsBeenPressed = !_hasPendentsBeenPressed;
+
+                    if (_hasFinalizadoBeenPressed == _hasPendentsBeenPressed) {
+                      _hasFinalizadoBeenPressed = false;
+                    }
+                    notifyTaskList();
                   },
                 ),
               },
               child: _hasPendentsBeenPressed
                   ? (const Text('PENDENTES',
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                       )))
                   : (const Text('PENDENTES',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 10,
                           fontWeight: FontWeight.bold))),
             ),
             const Spacer(flex: 7),
             Switch(
-              value: isSwitched,
+              value: _hasSelfTasks,
               onChanged: (value) {
                 setState(() {
-                  isSwitched = value;
+                  _hasSelfTasks = value;
+                  notifyTaskList();
                 });
               },
             ),
@@ -119,5 +132,10 @@ class _FilterTasks extends State<FilterTasks> {
         ),
       ),
     );
+  }
+
+  void notifyTaskList() {
+    refreshTaskPageStream.sink.add(
+        [_hasFinalizadoBeenPressed, _hasPendentsBeenPressed, _hasSelfTasks]);
   }
 }
