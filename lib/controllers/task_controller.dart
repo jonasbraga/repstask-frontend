@@ -78,12 +78,15 @@ class TaskController {
 
   Future<List<TaskModel>> getTasks(TaskFilterModel filters) async {
     var filterOption = 2;
+
     if (filters.showPendentsTasks || filters.showFinishedTasks) {
       filterOption = filters.showPendentsTasks ? 0 : 1;
     }
 
-    final response =
-        await http.get(Uri.parse('http://$backendAdress/tasks/$filterOption'));
+    var userIdIfFiltered = filters.onlyMyTasks ? '/1' : '';
+
+    final response = await http.get(Uri.parse(
+        'http://$backendAdress/tasks/$filterOption$userIdIfFiltered'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
