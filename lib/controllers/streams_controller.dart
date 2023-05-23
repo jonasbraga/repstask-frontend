@@ -1,3 +1,5 @@
 import 'dart:async';
 
-StreamController<List<bool>?> refreshTaskPageStream = StreamController();
+import 'package:reptask/models/trask_filters_model.dart';
+
+StreamController<TaskFilterModel> refreshTaskPageStream = StreamController();

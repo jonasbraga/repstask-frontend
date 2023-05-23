@@ -3,8 +3,8 @@ import 'package:reptask/components/create_task_modal.dart';
 import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/controllers/task_controller.dart';
 import 'package:reptask/models/task_model.dart';
+import 'package:reptask/models/trask_filters_model.dart';
 import '../components/bottom_modal.dart';
-import '../models/comments_model.dart';
 import 'create_comments_modal.dart';
 
 class ListViewHomeLayout extends StatefulWidget {
@@ -26,7 +26,7 @@ class _ListViewHome extends State<ListViewHomeLayout> {
       refreshPage();
     });
     taksController
-        .getTasks()
+        .getTasks(taskFilterActive)
         .then((taskResults) => setState(() => taksList = taskResults));
   }
 
@@ -114,7 +114,7 @@ class _ListViewHome extends State<ListViewHomeLayout> {
 
   Future<void> refreshPage() async {
     taksController
-        .getTasks()
+        .getTasks(taskFilterActive)
         .then((taskResults) => setState(() => taksList = taskResults));
   }
 }

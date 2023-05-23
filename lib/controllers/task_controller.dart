@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:reptask/configs/config.dart';
 import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/models/task_model.dart';
+import 'package:reptask/models/trask_filters_model.dart';
 
 class TaskController {
   Future createTask(TaskModel newTask) async {
@@ -24,7 +25,7 @@ class TaskController {
     var body = json.encode(data);
 
     final response = await http.post(uri, headers: headers, body: body);
-    refreshTaskPageStream.sink.add(null);
+    refreshTaskPageStream.sink.add(taskFilterActive);
   }
 
   Future updateTask(TaskModel newTask) async {
@@ -44,12 +45,14 @@ class TaskController {
     };
     var body = json.encode(data);
 
-    final response = await http.patch(uri, headers: headers, body: body);
+    await http.patch(uri, headers: headers, body: body);
+    refreshTaskPageStream.sink.add(taskFilterActive);
   }
 
   Future deleteTask(int id) async {
     final Uri uri = Uri.parse('http://$backendAdress/tasks/$id');
-    final response = await http.delete(uri);
+    await http.delete(uri);
+    refreshTaskPageStream.sink.add(taskFilterActive);
   }
 
   Future finishTask(TaskModel taskToFinish) async {
@@ -70,11 +73,17 @@ class TaskController {
     var body = json.encode(data);
 
     final response = await http.patch(uri, headers: headers, body: body);
+    refreshTaskPageStream.sink.add(taskFilterActive);
   }
 
-  Future<List<TaskModel>> getTasks() async {
+  Future<List<TaskModel>> getTasks(TaskFilterModel filters) async {
+    var filterOption = 2;
+    if (filters.showPendentsTasks || filters.showFinishedTasks) {
+      filterOption = filters.showPendentsTasks ? 0 : 1;
+    }
+
     final response =
-        await http.get(Uri.parse('http://$backendAdress/tasks-all/1'));
+        await http.get(Uri.parse('http://$backendAdress/tasks/$filterOption'));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

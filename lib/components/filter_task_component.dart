@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reptask/models/trask_filters_model.dart';
 import 'package:reptask/utils/primary_color.dart';
 
 import '../controllers/streams_controller.dart';
@@ -11,10 +12,6 @@ class FilterTasks extends StatefulWidget {
 }
 
 class _FilterTasks extends State<FilterTasks> {
-  bool _hasFinalizadoBeenPressed = false;
-  bool _hasPendentsBeenPressed = true;
-  bool _hasSelfTasks = false;
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -31,7 +28,7 @@ class _FilterTasks extends State<FilterTasks> {
             const Spacer(flex: 1),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: _hasFinalizadoBeenPressed
+                backgroundColor: taskFilterActive.showFinishedTasks
                     ? MaterialStatePropertyAll(
                         primaryColor,
                       )
@@ -52,15 +49,17 @@ class _FilterTasks extends State<FilterTasks> {
                 setState(
                   () {
                     // Pendente ta selecionado? se sim, desmarca o pendente também.
-                    _hasFinalizadoBeenPressed = !_hasFinalizadoBeenPressed;
-                    if (_hasFinalizadoBeenPressed == _hasPendentsBeenPressed) {
-                      _hasPendentsBeenPressed = false;
+                    taskFilterActive.showFinishedTasks =
+                        !taskFilterActive.showFinishedTasks;
+                    if (taskFilterActive.showFinishedTasks ==
+                        taskFilterActive.showPendentsTasks) {
+                      taskFilterActive.showPendentsTasks = false;
                     }
                     notifyTaskList();
                   },
                 ),
               },
-              child: _hasFinalizadoBeenPressed
+              child: taskFilterActive.showFinishedTasks
                   ? (const Text('FINALIZADOS',
                       style: TextStyle(
                           color: Colors.white,
@@ -75,7 +74,7 @@ class _FilterTasks extends State<FilterTasks> {
             const Spacer(flex: 1),
             ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: _hasPendentsBeenPressed
+                backgroundColor: taskFilterActive.showPendentsTasks
                     ? MaterialStatePropertyAll(
                         primaryColor,
                       )
@@ -95,16 +94,18 @@ class _FilterTasks extends State<FilterTasks> {
               onPressed: () => {
                 setState(
                   () {
-                    _hasPendentsBeenPressed = !_hasPendentsBeenPressed;
+                    taskFilterActive.showPendentsTasks =
+                        !taskFilterActive.showPendentsTasks;
 
-                    if (_hasFinalizadoBeenPressed == _hasPendentsBeenPressed) {
-                      _hasFinalizadoBeenPressed = false;
+                    if (taskFilterActive.showFinishedTasks ==
+                        taskFilterActive.showPendentsTasks) {
+                      taskFilterActive.showFinishedTasks = false;
                     }
                     notifyTaskList();
                   },
                 ),
               },
-              child: _hasPendentsBeenPressed
+              child: taskFilterActive.showPendentsTasks
                   ? (const Text('PENDENTES',
                       style: TextStyle(
                         color: Colors.white,
@@ -119,10 +120,10 @@ class _FilterTasks extends State<FilterTasks> {
             ),
             const Spacer(flex: 7),
             Switch(
-              value: _hasSelfTasks,
+              value: taskFilterActive.onlyMyTasks,
               onChanged: (value) {
                 setState(() {
-                  _hasSelfTasks = value;
+                  taskFilterActive.onlyMyTasks = value;
                   notifyTaskList();
                 });
               },
@@ -135,7 +136,6 @@ class _FilterTasks extends State<FilterTasks> {
   }
 
   void notifyTaskList() {
-    refreshTaskPageStream.sink.add(
-        [_hasFinalizadoBeenPressed, _hasPendentsBeenPressed, _hasSelfTasks]);
+    refreshTaskPageStream.sink.add(taskFilterActive);
   }
 }
