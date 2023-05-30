@@ -5,7 +5,7 @@ import 'package:reptask/controllers/task_controller.dart';
 import 'package:reptask/models/task_model.dart';
 import 'package:reptask/models/trask_filters_model.dart';
 import '../components/bottom_modal.dart';
-import 'create_comments_modal.dart';
+import 'task_details_component.dart';
 
 class ListViewHomeLayout extends StatefulWidget {
   const ListViewHomeLayout({super.key, required this.displayContent});
