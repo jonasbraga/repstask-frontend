@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/controllers/task_controller.dart';
 import 'package:reptask/models/task_model.dart';
-import '../models/comments_model.dart';
+import '../../models/comments_model.dart';
 
 class CreateCommentsModal extends StatefulWidget {
   const CreateCommentsModal({super.key, required this.taskData});
