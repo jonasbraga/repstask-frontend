@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:reptask/components/bottom_modal.dart';
+import 'package:reptask/components/task/create_comment_component.dart';
 import 'package:reptask/controllers/task_controller.dart';
 import 'package:reptask/models/task_model.dart';
-import '../../models/comments_model.dart';
 
 class CreateCommentsModal extends StatefulWidget {
   const CreateCommentsModal({super.key, required this.taskData});
@@ -41,7 +42,7 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
             size: 48,
           ),
         ),
-        Container(
+        SizedBox(
           height: 24,
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -72,6 +73,7 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
           child: Column(
             children: [
               TextField(
+                readOnly: true,
                 controller: _taskDescriptionController,
                 style: const TextStyle(
                   fontSize: 14,
@@ -79,17 +81,64 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
                   letterSpacing: 0.25,
                 ),
                 decoration: const InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                ),
+                    fillColor: Color.fromARGB(255, 197, 194, 194),
+                    filled: true,
+                    border: InputBorder.none),
               )
+            ],
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("Comentários",
+                style: TextStyle(
+                    letterSpacing: 0.15,
+                    fontSize: 24,
+                    color: Color.fromRGBO(0, 0, 0, 1))),
+            IconButton(
+                onPressed: () {
+                  showModal(context, const CreateCommentComponent(),
+                      backgroungTransparent: false);
+                },
+                icon: const Icon(
+                  Icons.add,
+                  size: 24,
+                  color: Color.fromRGBO(0, 0, 0, 1),
+                ))
+          ],
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.15,
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: 5,
+                  itemBuilder: (context, index) {
+                    return const Card(
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          radius: 12,
+                          backgroundImage: NetworkImage(
+                              'https://source.unsplash.com/50x50/?portrait'),
+                        ),
+                        title: Text('Vinicius'),
+                        subtitle: Text(
+                            'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
         Container(
           width: 154,
           height: 36,
-          margin: const EdgeInsets.only(top: 236, bottom: 78),
+          margin: const EdgeInsets.only(top: 32, bottom: 78),
           child: TextButton(
               onPressed: () {
                 Navigator.pop(context);
