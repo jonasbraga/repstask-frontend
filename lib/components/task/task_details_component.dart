@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/bottom_modal.dart';
-import 'package:reptask/components/task/create_comment_component.dart';
+import 'package:reptask/components/comment/create_comment_component.dart';
 import 'package:reptask/controllers/task_controller.dart';
 import 'package:reptask/models/task_model.dart';
 
