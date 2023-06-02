@@ -20,4 +20,28 @@ class CommentsController {
 
     await http.post(uri, headers: headers, body: body);
   }
+
+  Future<List<Comment>> getComments(int taskId) async {
+    final Uri uri = Uri.parse('http://$backendAdress/comments/$taskId');
+
+    final response = await http.get(uri);
+
+    List<Comment> results = [];
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      if (body.length > 0) {
+        body.forEach((commentJson) {
+          Comment comment = Comment(
+            comment: commentJson['comment'],
+            taskId: commentJson['task_id'],
+            userId: commentJson['user_id'],
+            userNick: commentJson['nickname'],
+          );
+          results.add(comment);
+        });
+      }
+    }
+
+    return results;
+  }
 }

@@ -92,7 +92,8 @@ class _CreateCommentComponentState extends State<CreateCommentComponent> {
   }
 
   createComment(String commentTyped, int taskId) {
-    Comment comment = Comment(comment: commentTyped, taskId: taskId, userId: 1);
+    Comment comment = Comment(
+        comment: commentTyped, taskId: taskId, userId: 1, userNick: 'Barbosa');
     _commentsController.registerComment(comment);
   }
 }

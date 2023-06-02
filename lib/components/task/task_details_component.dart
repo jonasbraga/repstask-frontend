@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/bottom_modal.dart';
 import 'package:reptask/components/comment/create_comment_component.dart';
+import 'package:reptask/controllers/comments_controller.dart';
 import 'package:reptask/controllers/task_controller.dart';
+import 'package:reptask/models/comments_model.dart';
 import 'package:reptask/models/task_model.dart';
 
 class CreateCommentsModal extends StatefulWidget {
@@ -14,17 +16,24 @@ class CreateCommentsModal extends StatefulWidget {
 
 class _CreateCommentsModalState extends State<CreateCommentsModal> {
   // late Task responsaveis;
-  late TaskModel taskData;
   final TextEditingController _taskTitleController = TextEditingController();
   final TextEditingController _taskPointsController = TextEditingController();
   final TextEditingController _taskDescriptionController =
       TextEditingController();
+  final CommentsController _commentsController = CommentsController();
+  late TaskModel taskData;
+  List<Comment> commentsList = [];
   //Alterar o get de responsáveis
 
   @override
   void initState() {
     super.initState();
     taskData = widget.taskData;
+    _commentsController
+        .getComments(taskData.id ?? 0)
+        .then((commnetsResult) => setState(
+              () => commentsList = commnetsResult,
+            ));
     _taskTitleController.text = taskData.titulo;
     _taskPointsController.text = taskData.pontos.toString();
     _taskDescriptionController.text = taskData.descricao ?? '';
@@ -98,7 +107,8 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
                     color: Color.fromRGBO(0, 0, 0, 1))),
             IconButton(
                 onPressed: () {
-                  showModal(context, CreateCommentComponent(taskId: taskData.id ?? 0),
+                  showModal(
+                      context, CreateCommentComponent(taskId: taskData.id ?? 0),
                       backgroungTransparent: false);
                 },
                 icon: const Icon(
@@ -115,18 +125,17 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: 5,
+                  itemCount: commentsList.length,
                   itemBuilder: (context, index) {
-                    return const Card(
+                    return Card(
                       child: ListTile(
-                        leading: CircleAvatar(
+                        leading: const CircleAvatar(
                           radius: 12,
                           backgroundImage: NetworkImage(
                               'https://source.unsplash.com/50x50/?portrait'),
                         ),
-                        title: Text('Vinicius'),
-                        subtitle: Text(
-                            'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'),
+                        title: Text(commentsList[index].userNick),
+                        subtitle: Text(commentsList[index].comment),
                       ),
                     );
                   },
