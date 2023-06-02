@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/models/comments_model.dart';
 
 import '../configs/config.dart';
@@ -19,6 +20,7 @@ class CommentsController {
     var body = jsonEncode(data);
 
     await http.post(uri, headers: headers, body: body);
+    refreshTaskDetailsStream.sink.add(null);
   }
 
   Future<List<Comment>> getComments(int taskId) async {

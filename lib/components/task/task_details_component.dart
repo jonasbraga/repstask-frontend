@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:reptask/components/bottom_modal.dart';
 import 'package:reptask/components/comment/create_comment_component.dart';
 import 'package:reptask/controllers/comments_controller.dart';
+import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/controllers/task_controller.dart';
 import 'package:reptask/models/comments_model.dart';
 import 'package:reptask/models/task_model.dart';
@@ -23,11 +26,15 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
   final CommentsController _commentsController = CommentsController();
   late TaskModel taskData;
   List<Comment> commentsList = [];
+  late StreamSubscription subscription;
   //Alterar o get de responsáveis
 
   @override
   void initState() {
     super.initState();
+    subscription = refreshTaskDetailsStream.stream.listen((event) {
+      refreshDetails();
+    });
     taskData = widget.taskData;
     _commentsController
         .getComments(taskData.id ?? 0)
@@ -37,6 +44,12 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
     _taskTitleController.text = taskData.titulo;
     _taskPointsController.text = taskData.pontos.toString();
     _taskDescriptionController.text = taskData.descricao ?? '';
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -175,5 +188,13 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
 
   void finishTask() async {
     await TaskController().finishTask(taskData);
+  }
+
+  void refreshDetails() async {
+    _commentsController
+        .getComments(taskData.id ?? 0)
+        .then((commentsResults) => setState(
+              () => commentsList = commentsResults,
+            ));
   }
 }
