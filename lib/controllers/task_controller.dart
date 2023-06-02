@@ -24,7 +24,7 @@ class TaskController {
     };
     var body = json.encode(data);
 
-    final response = await http.post(uri, headers: headers, body: body);
+    await http.post(uri, headers: headers, body: body);
     refreshTaskPageStream.sink.add(taskFilterActive);
   }
 
@@ -72,7 +72,7 @@ class TaskController {
     };
     var body = json.encode(data);
 
-    final response = await http.patch(uri, headers: headers, body: body);
+    await http.patch(uri, headers: headers, body: body);
     refreshTaskPageStream.sink.add(taskFilterActive);
   }
 
