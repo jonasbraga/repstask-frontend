@@ -1,9 +1,13 @@
-class Comments {
+class Comment {
   int? id;
-  String? titulo;
-  int? pontos;
-  String? descricao;
-  String? comentario;
+  String comment;
+  int taskId;
+  int userId;
 
-  Comments({this.id, this.titulo, this.pontos, this.descricao, this.comentario});
+  Comment({
+    this.id,
+    required this.comment,
+    required this.taskId,
+    required this.userId
+  });
 }

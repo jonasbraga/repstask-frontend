@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:reptask/controllers/comments_controller.dart';
+import 'package:reptask/models/comments_model.dart';
 
 class CreateCommentComponent extends StatefulWidget {
-  const CreateCommentComponent({super.key});
+  const CreateCommentComponent({super.key, required this.taskId});
+  final int taskId;
 
   @override
   State<CreateCommentComponent> createState() => _CreateCommentComponentState();
@@ -9,6 +12,7 @@ class CreateCommentComponent extends StatefulWidget {
 
 class _CreateCommentComponentState extends State<CreateCommentComponent> {
   final TextEditingController _commentController = TextEditingController();
+  final CommentsController _commentsController = CommentsController();
 
   @override
   void initState() {
@@ -64,6 +68,8 @@ class _CreateCommentComponentState extends State<CreateCommentComponent> {
               child: TextButton(
                   onPressed: () {
                     if (_commentController.text.trim().isNotEmpty) {
+                      createComment(
+                          _commentController.text.trim(), widget.taskId);
                       Navigator.pop(context);
                     }
                   },
@@ -83,5 +89,10 @@ class _CreateCommentComponentState extends State<CreateCommentComponent> {
         )
       ],
     );
+  }
+
+  createComment(String commentTyped, int taskId) {
+    Comment comment = Comment(comment: commentTyped, taskId: taskId, userId: 1);
+    _commentsController.registerComment(comment);
   }
 }

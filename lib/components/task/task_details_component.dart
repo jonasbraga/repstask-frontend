@@ -98,7 +98,7 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
                     color: Color.fromRGBO(0, 0, 0, 1))),
             IconButton(
                 onPressed: () {
-                  showModal(context, const CreateCommentComponent(),
+                  showModal(context, CreateCommentComponent(taskId: taskData.id ?? 0),
                       backgroungTransparent: false);
                 },
                 icon: const Icon(
