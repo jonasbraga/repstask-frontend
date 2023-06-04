@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:reptask/components/bottom_modal.dart';
+import 'package:reptask/components/create_user_modal.dart';
 
 class MyRepPage extends StatefulWidget {
   const MyRepPage({Key? key}) : super(key: key);
@@ -16,7 +18,9 @@ class _MyRepPageState extends State<MyRepPage> {
       ),
       body: Container(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showModal(context, const CreateUserModal());
+        },
         child: const Icon(Icons.add),
       ),
     );
