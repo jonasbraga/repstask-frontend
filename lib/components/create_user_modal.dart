@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:reptask/controllers/user_controller.dart';
+import 'package:reptask/models/user_model.dart';
 
 class CreateUserModal extends StatefulWidget {
   const CreateUserModal({super.key});
@@ -10,8 +12,10 @@ class CreateUserModal extends StatefulWidget {
 class _CreateUserModalState extends State<CreateUserModal> {
   bool obscurePassword = true;
   TextEditingController userNameController = TextEditingController();
+  TextEditingController userNicknameController = TextEditingController();
   TextEditingController userEmailController = TextEditingController();
   TextEditingController userPasswordController = TextEditingController();
+  final _userController = UserController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +44,18 @@ class _CreateUserModalState extends State<CreateUserModal> {
             controller: userNameController,
             decoration: const InputDecoration(
                 labelText: 'Nome',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder()),
+          ),
+        ),
+        Container(
+          height: 55,
+          margin: const EdgeInsets.only(top: 12),
+          child: TextFormField(
+            controller: userNicknameController,
+            decoration: const InputDecoration(
+                labelText: 'Apelido',
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder()),
@@ -89,6 +105,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
           margin: const EdgeInsets.only(top: 32, bottom: 36),
           child: TextButton(
               onPressed: () {
+                createUserFunction();
                 Navigator.pop(context);
               },
               style: TextButton.styleFrom(
@@ -105,5 +122,16 @@ class _CreateUserModalState extends State<CreateUserModal> {
         )
       ],
     );
+  }
+
+  void createUserFunction() {
+    final userData = UserModel(
+        name: userNameController.text,
+        nickname: userNicknameController.text,
+        password: userPasswordController.text,
+        email: userEmailController.text,
+        type: 1,
+        repId: 1);
+    _userController.createNewUser(userData);
   }
 }
