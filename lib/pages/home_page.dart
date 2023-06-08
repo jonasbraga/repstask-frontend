@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/create_task_modal.dart';
+import 'package:reptask/widget/appbar_widget.dart';
 import '../components/bottom_modal.dart';
 import '../components/filter_task_component.dart';
 import '../components/task_list.dart';
@@ -17,9 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: buildAppBar(context, widget.title, true),
       body: Column(
         children: const <Widget>[
           FilterTasks(),
