@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:reptask/components/reward/buy_reward_dialog.dart';
+import 'package:reptask/components/reward/delete_reward_dialog.dart';
 
 import '../../models/reward_model.dart';
 
@@ -25,7 +27,11 @@ class _RewardsListState extends State<RewardsList> {
             key: ValueKey(index),
             child: ListTile(
               onTap: () {
-                print("Clicou no cartão");
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return BuyRewardDialog(rewardData: rewardList[index]);
+                    });
               },
               title: Text(rewardList[index].titulo),
               subtitle: Text('${rewardList[index].pontos}pts'),
@@ -42,7 +48,13 @@ class _RewardsListState extends State<RewardsList> {
                                 print("Abrir modo de edição");
                                 break;
                               case "option2":
-                                print("Chamar delete reward");
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return DeleteRewardDialog(
+                                        rewardData: rewardList[index],
+                                      );
+                                    });
                                 break;
                             }
                           },
@@ -65,7 +77,11 @@ class _RewardsListState extends State<RewardsList> {
                     IconButton(
                       icon: const Icon(Icons.shopping_cart),
                       onPressed: () {
-                        print('Usuário clicou no presente');
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return BuyRewardDialog(rewardData: rewardList[index]);
+                        });
                       },
                     )
                 ],
