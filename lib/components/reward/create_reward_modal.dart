@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:reptask/models/reward_model.dart';
 
 class CreateRewardModal extends StatefulWidget {
-  const CreateRewardModal({super.key});
+  const CreateRewardModal({super.key, this.rewardDataSended});
+  final RewardModel? rewardDataSended;
 
   @override
   State<CreateRewardModal> createState() => _CreateRewardModalState();
 }
 
 class _CreateRewardModalState extends State<CreateRewardModal> {
+  late RewardModel rewardData;
   TextEditingController rewardNameController = TextEditingController();
   TextEditingController rewardPointsController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    rewardData = widget.rewardDataSended ?? RewardModel(pontos: 0, titulo: '');
+
+    rewardNameController.text = rewardData.titulo;
+    rewardPointsController.text = rewardData.pontos.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,11 +82,21 @@ class _CreateRewardModalState extends State<CreateRewardModal> {
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
-              child: const Text(
-                'CRIAR',
-                style: TextStyle(
-                    color: Colors.white, letterSpacing: 1.25, fontSize: 16),
-              )),
+              child: widget.rewardDataSended != null
+                  ? const Text(
+                      'ATUALIZAR',
+                      style: TextStyle(
+                          color: Colors.white,
+                          letterSpacing: 1.25,
+                          fontSize: 16),
+                    )
+                  : const Text(
+                      'CRIAR',
+                      style: TextStyle(
+                          color: Colors.white,
+                          letterSpacing: 1.25,
+                          fontSize: 16),
+                    )),
         )
       ],
     );

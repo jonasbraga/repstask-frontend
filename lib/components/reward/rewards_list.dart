@@ -3,6 +3,8 @@ import 'package:reptask/components/reward/buy_reward_dialog.dart';
 import 'package:reptask/components/reward/delete_reward_dialog.dart';
 
 import '../../models/reward_model.dart';
+import '../bottom_modal.dart';
+import 'create_reward_modal.dart';
 
 class RewardsList extends StatefulWidget {
   const RewardsList({super.key, required this.isAdmUser});
@@ -45,7 +47,10 @@ class _RewardsListState extends State<RewardsList> {
                           onSelected: (value) {
                             switch (value) {
                               case "option1":
-                                print("Abrir modo de edição");
+                                showModal(
+                                    context,
+                                    CreateRewardModal(
+                                        rewardDataSended: rewardList[index]));
                                 break;
                               case "option2":
                                 showDialog(
@@ -78,10 +83,11 @@ class _RewardsListState extends State<RewardsList> {
                       icon: const Icon(Icons.shopping_cart),
                       onPressed: () {
                         showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return BuyRewardDialog(rewardData: rewardList[index]);
-                        });
+                            context: context,
+                            builder: (BuildContext context) {
+                              return BuyRewardDialog(
+                                  rewardData: rewardList[index]);
+                            });
                       },
                     )
                 ],
