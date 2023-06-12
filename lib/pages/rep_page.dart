@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/bottom_modal.dart';
-import 'package:reptask/components/create_user_modal.dart';
+import 'package:reptask/components/user/create_user_modal.dart';
 
 class MyRepPage extends StatefulWidget {
   const MyRepPage({Key? key}) : super(key: key);
