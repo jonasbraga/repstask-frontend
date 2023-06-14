@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
-showModal(context, modalContent) {
+showModal(context, modalContent, {bool backgroungTransparent = true}) {
   showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      barrierColor: Colors.transparent,
+      backgroundColor: Colors.transparent,
+      barrierColor: backgroungTransparent
+          ? Colors.transparent
+          : const Color.fromRGBO(0, 0, 0, 0.4),
       builder: (context) {
         return SingleChildScrollView(
           child: Wrap(children: [

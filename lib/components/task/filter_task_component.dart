@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reptask/models/trask_filters_model.dart';
 import 'package:reptask/utils/primary_color.dart';
 
-import '../controllers/streams_controller.dart';
+import '../../controllers/streams_controller.dart';
 
 class FilterTasks extends StatefulWidget {
   const FilterTasks({Key? key}) : super(key: key);
