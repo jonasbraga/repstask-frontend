@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-StreamController<List<bool>?> refreshTaskPageStream = StreamController();
-// StreamController<List<bool>?> refreshTaskPageStream = StreamController();
+import 'package:reptask/models/trask_filters_model.dart';
+
+StreamController<TaskFilterModel> refreshTaskPageStream = StreamController();
+StreamController<void> refreshTaskDetailsStream = StreamController.broadcast();
 StreamController refreshUserPageStream = StreamController();

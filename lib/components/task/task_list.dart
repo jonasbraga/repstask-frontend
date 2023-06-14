@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:reptask/components/create_task_modal.dart';
+import 'package:reptask/components/task/create_task_modal.dart';
 import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/controllers/task_controller.dart';
 import 'package:reptask/models/task_model.dart';
-import '../components/bottom_modal.dart';
-import '../models/comments_model.dart';
-import 'create_comments_modal.dart';
+import 'package:reptask/models/trask_filters_model.dart';
+import '../bottom_modal.dart';
+import 'task_details_component.dart';
 
 class ListViewHomeLayout extends StatefulWidget {
   const ListViewHomeLayout({super.key, required this.displayContent});
@@ -26,7 +26,7 @@ class _ListViewHome extends State<ListViewHomeLayout> {
       refreshPage();
     });
     taksController
-        .getTasks()
+        .getTasks(taskFilterActive)
         .then((taskResults) => setState(() => taksList = taskResults));
   }
 
@@ -41,6 +41,12 @@ class _ListViewHome extends State<ListViewHomeLayout> {
             return Card(
                 key: ValueKey(index),
                 child: ListTile(
+                  onTap: () {
+                    showModal(
+                      context,
+                      CreateCommentsModal(taskData: taksList[index]),
+                    );
+                  },
                   title: Text(taksList[index].titulo),
                   subtitle: Text(taksList[index].pontos.toString()),
                   trailing: Wrap(
@@ -54,13 +60,7 @@ class _ListViewHome extends State<ListViewHomeLayout> {
                           onPressed: () {
                             showModal(
                               context,
-                              CreateCommentsModal(
-                                  disabledData: Comments(
-                                id: taksList[index].id,
-                                titulo: taksList[index].titulo,
-                                pontos: 2,
-                                descricao: taksList[index].descricao,
-                              )),
+                              CreateCommentsModal(taskData: taksList[index]),
                             );
                           },
                         )
@@ -81,7 +81,9 @@ class _ListViewHome extends State<ListViewHomeLayout> {
                                     ;
                                     break;
                                   case "option2":
-                                    print("Option 1 selected");
+                                    TaskController()
+                                        .deleteTask(taksList[index].id ?? 0);
+
                                     break;
                                 }
                               },
@@ -112,7 +114,7 @@ class _ListViewHome extends State<ListViewHomeLayout> {
 
   Future<void> refreshPage() async {
     taksController
-        .getTasks()
+        .getTasks(taskFilterActive)
         .then((taskResults) => setState(() => taksList = taskResults));
   }
 }

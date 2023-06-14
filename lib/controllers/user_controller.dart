@@ -11,7 +11,7 @@ import 'package:reptask/models/user_model.dart';
 import 'package:reptask/utils/user_preferences.dart';
 
 class UserController {
-  Future createUser(UserModel newUser) async {
+  Future createNewUser(UserModel newUser) async {
     final Uri uri = Uri.parse('http://$backendAdress/users');
     final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
 

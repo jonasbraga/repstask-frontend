@@ -7,8 +7,8 @@ class UserModel {
   String password;
   int userType;
   String nomeRep;
-  String userPoints;
-  String userDoneTasks;
+  String? userPoints;
+  String? userDoneTasks;
   bool? isDarkMode;
 
   UserModel(
@@ -19,10 +19,10 @@ class UserModel {
       required this.nickname,
       required this.password,
       required this.userType,
-      required this.userPoints,
+      this.userPoints,
       required this.nomeRep,
       this.isDarkMode,
-      required this.userDoneTasks});
+      this.userDoneTasks});
 
   // JsonMethods
   factory UserModel.fromJson(Map<String, dynamic> json) {
