@@ -9,17 +9,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = UserPreferences.myUser;
+    final myUser = UserPreferences.myUser;
 
     return ThemeProvider(
-      initTheme: (user.isDarkMode!) ? MyThemes.darkTheme : MyThemes.lightTheme,
+      initTheme:
+          (myUser.isDarkMode!) ? MyThemes.darkTheme : MyThemes.lightTheme,
       child: Builder(
         builder: (context) => MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: ThemeData(),
           title: 'Flutter Demo',
           // home: const ProfilePage(title: 'Perfil'),
-          home: const MyHomePage(title: 'Tarefas'),
+          home: MyHomePage(title: 'Tarefas', user: myUser),
           //   home: ProfilePage(),
         ),
       ),

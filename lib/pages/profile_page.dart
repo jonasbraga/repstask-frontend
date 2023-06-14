@@ -29,8 +29,15 @@ class _ProfilePageState extends State<ProfilePage> {
       refreshPage();
     });
     userController
-        .getUsers()
+        .getUsers((userResult.id).toInt())
         .then((userResults) => setState(() => userResult = userResults));
+  }
+
+  @override
+  void dispose() {
+    refreshUserPageStream
+        .close(); // Ou qualquer outra stream que esteja ouvindo
+    super.dispose();
   }
 
   @override
@@ -38,7 +45,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return ThemeSwitchingArea(
       child: Builder(
         builder: (context) => Scaffold(
-          appBar: buildAppBar(context, 'Perfil', false),
+          appBar: buildAppBar(context, 'Perfil', userResult, false),
           body: ListView(
             physics: const BouncingScrollPhysics(),
             children: [
@@ -204,8 +211,10 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> refreshPage() async {
-    userController
-        .getUsers()
-        .then((userResults) => setState(() => userResult = userResults));
+    if (mounted) {
+      userController
+          .getUsers(userResult.id)
+          .then((userResults) => setState(() => userResult = userResults));
+    }
   }
 }

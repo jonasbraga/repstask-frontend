@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
+import 'package:reptask/controllers/user_controller.dart';
 import 'package:reptask/models/user_model.dart';
 import 'package:reptask/pages/profile_page.dart';
 import 'package:reptask/utils/user_preferences.dart';
@@ -10,10 +11,21 @@ import 'package:reptask/widget/menu_wigget.dart';
 import '../utils/themes.dart';
 import '../utils/primary_color.dart';
 
-AppBar buildAppBar(BuildContext context, String title, bool initPage) {
+AppBar buildAppBar(
+    // class BuildAppBar extends AppBar {
+    //   const BuildAppBar ({Key? key, }) : super (key: key);
+    BuildContext context,
+    String title,
+    UserModel userParam,
+    bool initPage) {
   final isDarkMode = Theme.of(context).brightness == Brightness.dark;
   const icon = Icons.nightlight_round;
   UserModel user = UserPreferences.myUser;
+  // UserController userController = UserController();
+
+  // userController
+  //     .getUsers(userParam.id)
+  //     .then((userResults) => user = userResults);
 
   Widget buildImage() {
     final bytes = base64.decode(user.imagePath!);
@@ -51,7 +63,10 @@ AppBar buildAppBar(BuildContext context, String title, bool initPage) {
               padding: const EdgeInsets.only(right: 8.0),
               child: Row(
                 children: [
-                  Text('Pontos'),
+                  const Text('Pontos'),
+                  const SizedBox(
+                    height: 2,
+                  ),
                   buildImage(),
                 ],
               ),

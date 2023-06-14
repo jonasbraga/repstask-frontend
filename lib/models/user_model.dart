@@ -1,5 +1,5 @@
 class UserModel {
-  int? id;
+  int id;
   String? imagePath;
   String name;
   String email;
@@ -12,7 +12,7 @@ class UserModel {
   bool? isDarkMode;
 
   UserModel(
-      {this.id,
+      {required this.id,
       this.imagePath,
       required this.name,
       required this.email,

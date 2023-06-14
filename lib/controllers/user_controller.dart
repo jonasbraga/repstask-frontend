@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:ffi';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -11,6 +13,8 @@ import 'package:reptask/models/user_model.dart';
 import 'package:reptask/utils/user_preferences.dart';
 
 class UserController {
+  // StreamController refreshUserPageStream = StreamController();
+
   Future createUser(UserModel newUser) async {
     final Uri uri = Uri.parse('http://$backendAdress/users');
     final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
@@ -52,11 +56,12 @@ class UserController {
     return 'Endereço IP não encontrado';
   }
 
-  Future getUsers() async {
+  Future getUsers(int idUser) async {
     final address = await getIpAddress();
-
+    debugPrint(idUser.toString());
+    debugPrint('http://$backendAdress/users/$idUser');
     final response = await http.get(
-      Uri.parse('http://$backendAdress/users/2'),
+      Uri.parse('http://$backendAdress/users/$idUser'),
       headers: {'Origin': address},
     );
     if (response.statusCode == 200) {
@@ -106,7 +111,7 @@ class UserController {
     };
     var body = json.encode(data);
 
-    final response = await http.patch(uri, headers: headers, body: body);
+    await http.patch(uri, headers: headers, body: body);
     refreshUserPageStream.sink.add(null);
   }
 }
