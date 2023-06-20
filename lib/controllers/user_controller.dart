@@ -11,19 +11,22 @@ import 'package:reptask/models/user_model.dart';
 import 'package:reptask/utils/user_preferences.dart';
 
 class UserController {
-  Future createNewUser(UserModel newUser) async {
+  Future createNewUser(UserModel newUser, int repId) async {
     final Uri uri = Uri.parse('http://$backendAdress/users');
     final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
 
     var data = {
-      'nome': newUser.name,
-      'email': newUser.email,
-      'apelido': newUser.nickname,
+      'name': newUser.name,
+      // 'email': newUser.email,
+      'password': newUser.password,
+      'nickname': newUser.nickname,
       'photo': newUser.imagePath,
-      'nomeRep': newUser.nomeRep,
+      // 'nome_rep': newUser.nomeRep,
       // 'isDarkMode': newUser.isDarkMode,
-      'id': newUser.id,
-      'userPoints': newUser.userPoints,
+      // 'id': newUser.id,
+      'user_type': 0,
+      'reps_id': newUser.repId
+      // 'userPoints': newUser.userPoints,
     };
     var body = json.encode(data);
 
@@ -52,7 +55,7 @@ class UserController {
     return 'Endereço IP não encontrado';
   }
 
-  Future getUsers() async {
+  Future getUsers(UserModel user) async {
     final address = await getIpAddress();
 
     final response = await http.get(
@@ -71,7 +74,8 @@ class UserController {
           userType: body['user_type'],
           nickname: body['nickname'],
           password: body['password'],
-          nomeRep: body['reps_id'],
+          repId: body['reps_id'],
+          nomeRep: body['nomeRep'],
           userPoints: body['userPoints'],
           userDoneTasks: body['userDoneTasks'],
           // isDarkMode: body['isDarkMode'],

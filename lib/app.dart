@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:reptask/pages/login_page.dart';
 import 'package:reptask/pages/edit_profile_page.dart';
 import 'package:reptask/pages/profile_page.dart';
+import 'package:reptask/pages/rep_page.dart';
+import 'package:reptask/pages/shop_page.dart';
 import 'package:reptask/utils/primary_color.dart';
 import 'package:reptask/utils/themes.dart';
 import 'package:reptask/utils/user_preferences.dart';
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: ThemeData(),
           title: 'Flutter Demo',
-          home:  const LoginPage(),
+          home: const LoginPage(),
           // home: const ProfilePage(title: 'Perfil'),
           // home: ProfilePage(),
           // home: const MyHomePage(title: 'Tarefas'),
