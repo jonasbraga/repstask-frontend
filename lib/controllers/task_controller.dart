@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:reptask/configs/config.dart';
@@ -76,18 +77,26 @@ class TaskController {
     refreshTaskPageStream.sink.add(taskFilterActive);
   }
 
-  Future<List<TaskModel>> getTasks(TaskFilterModel filters) async {
+  Future<List<TaskModel>> getTasks(
+      TaskFilterModel filters, int userId, String token) async {
     var filterOption = 2;
 
     if (filters.showPendentsTasks || filters.showFinishedTasks) {
       filterOption = filters.showPendentsTasks ? 0 : 1;
     }
 
-    var userIdIfFiltered = filters.onlyMyTasks ? '/1' : '';
+    var userIdIfFiltered = filters.onlyMyTasks ? userId : '';
+    // var token =  token;
+    final response = await http.get(
+      Uri.parse('http://$backendAdress/tasks/$filterOption/$userIdIfFiltered'),
+      // Send authorization token in the 'Authorization' header
+      headers: {
+        'Authorization':
+            'Bearer $token', // Replace $token with your actual token
+      },
+    );
 
-    final response = await http.get(Uri.parse(
-        'http://$backendAdress/tasks/$filterOption$userIdIfFiltered'));
-
+    debugPrint(response.toString());
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.

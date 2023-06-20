@@ -11,20 +11,23 @@ class UserModel {
   String? userDoneTasks;
   bool? isDarkMode;
   int repId;
+  String? token;
 
-  UserModel(
-      {this.id,
-      this.imagePath,
-      required this.name,
-      required this.email,
-      required this.nickname,
-      required this.password,
-      required this.userType,
-      this.userPoints,
-      this.nomeRep,
-      this.isDarkMode,
-      this.userDoneTasks,
-      required this.repId});
+  UserModel({
+    this.id,
+    this.imagePath,
+    required this.name,
+    required this.email,
+    required this.nickname,
+    required this.password,
+    required this.userType,
+    this.userPoints,
+    this.nomeRep,
+    this.isDarkMode,
+    this.userDoneTasks,
+    required this.repId,
+    this.token,
+  });
 
   // JsonMethods
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +43,7 @@ class UserModel {
     final isDarkMode = json['isDarkMode'];
     final id = json['id'];
     final repId = json['reps_id'];
+    final token = json['token'];
 
     return UserModel(
       imagePath: imagePath,
@@ -54,6 +58,7 @@ class UserModel {
       userPoints: userPoints,
       userDoneTasks: userDoneTasks,
       id: id,
+      token: token,
     );
   }
 

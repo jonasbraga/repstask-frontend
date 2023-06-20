@@ -10,15 +10,15 @@ import '../models/user_model.dart';
 import '../widget/appbar_widget.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key, this.userInfo}) : super(key: key);
-  final UserModel? userInfo;
+  const EditProfilePage({Key? key, required this.userInfo}) : super(key: key);
+  final UserModel userInfo;
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  late UserModel userResult;
+  // late UserModel widget.userInfo;
   UserController userController = UserController();
   late bool _changeSenha = false;
   late bool _showPassword = false;
@@ -33,33 +33,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
 
-    userResult = widget.userInfo ??
-        UserModel(
-          imagePath: 'Sem Imagem',
-          name: 'name',
-          email: 'email',
-          nickname: 'nickname',
-          password: '12345678',
-          userType: 0,
-          nomeRep: 'nomeRep',
-          isDarkMode: false,
-          userPoints: 'userPoints',
-          userDoneTasks: 'userDoneTasks',
-          repId: 1,
-          id: 2,
-        );
-    _userNameController.text = userResult.name;
-    _userNicknameController.text = userResult.nickname;
-    _userPasswordController.text = userResult.password;
+    // widget.userInfo = widget.userInfo ??
+    //     UserModel(
+    //       imagePath: 'Sem Imagem',
+    //       name: 'name',
+    //       email: 'email',
+    //       nickname: 'nickname',
+    //       password: '12345678',
+    //       userType: 0,
+    //       nomeRep: 'nomeRep',
+    //       isDarkMode: false,
+    //       userPoints: 'userPoints',
+    //       userDoneTasks: 'userDoneTasks',
+    //       repId: 1,
+    //       id: 2,
+    //     );
+    _userNameController.text = widget.userInfo.name;
+    _userNicknameController.text = widget.userInfo.nickname;
+    _userPasswordController.text = widget.userInfo.password;
     _userNewPasswordController.text = '';
-    // _userSenhaController.text = userResult.password;
+    // _userSenhaController.text = widget.userInfo.password;
   }
 
   @override
   Widget build(BuildContext context) => ThemeSwitchingArea(
         child: Builder(
           builder: (context) => Scaffold(
-            appBar: buildAppBar(context, 'Editar Perfil', false),
+            appBar:
+                buildAppBar(context, 'Editar Perfil', false, widget.userInfo),
             body: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               physics: const BouncingScrollPhysics(),
@@ -73,7 +74,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         ProfileWidget(
-                            imagePath: userResult.imagePath!,
+                            imagePath: widget.userInfo.imagePath!,
                             isEdit: true,
                             onClicked: () async {
                               final ImagePicker picker = ImagePicker();
@@ -89,8 +90,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                                 debugPrint(base64Image.toString());
 
-                                setState(
-                                    () => userResult.imagePath = base64Image!);
+                                setState(() =>
+                                    widget.userInfo.imagePath = base64Image!);
                               }
                             }),
                       ],
@@ -101,7 +102,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 TextField(
                   controller: _userNameController,
                   onChanged: (value) => setState(() {
-                    userResult.name = value;
+                    widget.userInfo.name = value;
                   }),
                   decoration: InputDecoration(
                       labelText: 'Nome',
@@ -113,7 +114,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 TextField(
                   controller: _userNicknameController,
                   onChanged: (value) => setState(() {
-                    userResult.nickname = value;
+                    widget.userInfo.nickname = value;
                   }),
                   decoration: InputDecoration(
                       labelText: 'Apelido',
@@ -140,7 +141,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         TextField(
                           controller: _userPasswordController,
                           onChanged: (value) => setState(() {
-                            userResult.password = value;
+                            widget.userInfo.password = value;
                           }),
                           obscureText: !_showPassword,
                           decoration: InputDecoration(
@@ -164,7 +165,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         TextField(
                           controller: _userNewPasswordController,
                           onChanged: (value) => setState(() {
-                            userResult.password = value;
+                            widget.userInfo.password = value;
                           }),
                           decoration: InputDecoration(
                             suffixIcon: GestureDetector(
@@ -187,7 +188,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ]),
                 ElevatedButton(
                     onPressed: () {
-                      updateUser(userResult);
+                      updateUser(widget.userInfo);
                     },
                     child: const Center(
                       child: Text('Salvar'),

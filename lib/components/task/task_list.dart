@@ -8,8 +8,14 @@ import '../bottom_modal.dart';
 import 'task_details_component.dart';
 
 class ListViewHomeLayout extends StatefulWidget {
-  const ListViewHomeLayout({super.key, required this.displayContent});
+  const ListViewHomeLayout(
+      {super.key,
+      required this.displayContent,
+      required this.userId,
+      required this.token});
   final bool displayContent;
+  final int userId;
+  final String token;
 
   @override
   State<ListViewHomeLayout> createState() => _ListViewHome();
@@ -26,7 +32,7 @@ class _ListViewHome extends State<ListViewHomeLayout> {
       refreshPage();
     });
     taksController
-        .getTasks(taskFilterActive)
+        .getTasks(taskFilterActive, widget.userId, widget.token)
         .then((taskResults) => setState(() => taksList = taskResults));
   }
 
@@ -78,7 +84,7 @@ class _ListViewHome extends State<ListViewHomeLayout> {
                                           CreateTaskModal(
                                               taskDataSended: taksList[index]),
                                         ]));
-                                    ;
+
                                     break;
                                   case "option2":
                                     TaskController()
@@ -114,7 +120,7 @@ class _ListViewHome extends State<ListViewHomeLayout> {
 
   Future<void> refreshPage() async {
     taksController
-        .getTasks(taskFilterActive)
+        .getTasks(taskFilterActive, widget.userId, widget.token)
         .then((taskResults) => setState(() => taksList = taskResults));
   }
 }
