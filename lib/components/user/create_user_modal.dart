@@ -126,13 +126,13 @@ class _CreateUserModalState extends State<CreateUserModal> {
 
   void createUserFunction() {
     final userData = UserModel(
-      name: userNameController.text,
-      nickname: userNicknameController.text,
-      password: userPasswordController.text,
-      email: userEmailController.text,
-      userType: 1,
-      nomeRep: 'Republicão',
-    );
-    _userController.createNewUser(userData);
+        name: userNameController.text,
+        nickname: userNicknameController.text,
+        password: userPasswordController.text,
+        email: userEmailController.text,
+        userType: 1,
+        // nomeRep: 'Republicão',
+        repId: 1);
+    _userController.createNewUser(userData, 1);
   }
 }

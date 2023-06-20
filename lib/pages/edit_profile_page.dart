@@ -45,6 +45,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           isDarkMode: false,
           userPoints: 'userPoints',
           userDoneTasks: 'userDoneTasks',
+          repId: 1,
           id: 2,
         );
     _userNameController.text = userResult.name;

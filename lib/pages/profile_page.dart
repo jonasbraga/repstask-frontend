@@ -25,12 +25,12 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    refreshUserPageStream.stream.listen((event) {
-      refreshPage();
-    });
-    userController
-        .getUsers()
-        .then((userResults) => setState(() => userResult = userResults));
+    // refreshUserPageStream.stream.listen((event) {
+    // refreshPage();
+    // });
+    // userController
+    // .getUsers()
+    // .then((userResults) => setState(() => userResult = userResults));
   }
 
   @override
@@ -72,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     textAlign: TextAlign.center,
                                   ),
                                   Text(
-                                    userResult.userDoneTasks,
+                                    userResult.userDoneTasks!,
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
@@ -120,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  userResult.userPoints,
+                                  userResult.userPoints!,
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -176,7 +176,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         const SizedBox(height: 6),
         Text(
-          user.nomeRep,
+          user.nomeRep!,
           style: const TextStyle(fontSize: 24),
         )
       ],
@@ -204,8 +204,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> refreshPage() async {
-    userController
-        .getUsers()
-        .then((userResults) => setState(() => userResult = userResults));
+    // userController
+    // .getUsers()
+    // .then((userResults) => setState(() => userResult = userResults));
   }
 }
