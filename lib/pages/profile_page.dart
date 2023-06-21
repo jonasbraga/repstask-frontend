@@ -10,8 +10,9 @@ import '../models/user_model.dart';
 import 'package:reptask/utils/user_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key, required this.title}) : super(key: key);
-
+  const ProfilePage({Key? key, required this.title, required this.user})
+      : super(key: key);
+  final UserModel user;
   final String title;
 
   @override
@@ -19,8 +20,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  UserController userController = UserController();
-  UserModel userResult = UserPreferences.myUser;
+  // UserController userController = UserController();
+  // UserModel widget.user = UserPreferences.myUser;
 
   @override
   void initState() {
@@ -30,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
     // });
     // userController
     // .getUsers()
-    // .then((userResults) => setState(() => userResult = userResults));
+    // .then((userResults) => setState(() => widget.user = userResults));
   }
 
   @override
@@ -38,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return ThemeSwitchingArea(
       child: Builder(
         builder: (context) => Scaffold(
-          appBar: buildAppBar(context, 'Perfil', false),
+          appBar: buildAppBar(context, 'Perfil', false, widget.user),
           body: ListView(
             physics: const BouncingScrollPhysics(),
             children: [
@@ -72,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     textAlign: TextAlign.center,
                                   ),
                                   Text(
-                                    userResult.userDoneTasks!,
+                                    widget.user.userDoneTasks!,
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
@@ -84,19 +85,19 @@ class _ProfilePageState extends State<ProfilePage> {
                           Column(
                             children: [
                               ProfileWidget(
-                                imagePath: userResult.imagePath!,
+                                imagePath: widget.user.imagePath!,
                                 onClicked: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                         builder: (context) => EditProfilePage(
-                                            userInfo: userResult)),
+                                            userInfo: widget.user)),
                                   );
                                 },
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: Text(
-                                    userResult.userType == 1
+                                    widget.user.userType == 1
                                         ? 'Admin'
                                         : 'Morador',
                                     style: const TextStyle(
@@ -120,7 +121,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  userResult.userPoints!,
+                                  widget.user.userPoints!,
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -135,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(userResult.nickname.toUpperCase(),
+                        child: Text(widget.user.nickname.toUpperCase(),
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -146,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const SizedBox(height: 24),
-              buildName(userResult),
+              buildName(widget.user),
               const SizedBox(height: 24),
               // buildAbout(user),
             ],
@@ -206,6 +207,6 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> refreshPage() async {
     // userController
     // .getUsers()
-    // .then((userResults) => setState(() => userResult = userResults));
+    // .then((userResults) => setState(() => widget.user = userResults));
   }
 }

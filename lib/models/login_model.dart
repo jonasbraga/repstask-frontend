@@ -1,6 +1,6 @@
 class LoginModel {
   String rep;
-  String? usuario;
+  String usuario;
   String senha;
 
   LoginModel({
@@ -12,20 +12,20 @@ class LoginModel {
   // JsonMethods
   factory LoginModel.fromJson(Map<String, dynamic> json) {
     final rep = json['rep'];
-    final usuario = json['user'];
+    final usuario = json['email'];
     final senha = json['password'];
 
     return LoginModel(
-        rep: rep,
-        usuario: usuario,
-        senha: senha,
-      );
+      rep: rep,
+      usuario: usuario,
+      senha: senha,
+    );
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> json = {};
     json['rep'] = rep;
-    json['user'] = usuario;
+    json['email'] = usuario;
     json['password'] = senha;
     return json;
   }
