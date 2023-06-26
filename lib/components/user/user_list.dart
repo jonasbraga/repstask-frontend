@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reptask/components/task/create_task_modal.dart';
 import 'package:reptask/controllers/streams_controller.dart';
-import 'package:reptask/controllers/task_controller.dart';
-import 'package:reptask/models/task_model.dart';
-import 'package:reptask/models/trask_filters_model.dart';
 import 'package:reptask/models/user_model.dart';
 import '../../controllers/user_controller.dart';
-import '../bottom_modal.dart';
 
 class ListViewUserLayout extends StatefulWidget {
   const ListViewUserLayout(
@@ -33,7 +28,7 @@ class _ListViewHome extends State<ListViewUserLayout> {
       refreshPage();
     });
     usersController
-        .getUsers(widget.user)
+        .getUsersList(widget.user, widget.token)
         .then((UsersResults) => setState(() => userList = UsersResults));
   }
 
@@ -116,7 +111,7 @@ class _ListViewHome extends State<ListViewUserLayout> {
 
   Future<void> refreshPage() async {
     usersController
-        .getUsers(widget.user)
+        .getUsersList(widget.user, widget.token)
         .then((UsersResults) => setState(() => userList = UsersResults));
   }
 }

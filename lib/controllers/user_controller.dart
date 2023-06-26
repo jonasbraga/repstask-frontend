@@ -61,14 +61,14 @@ class UserController {
     refreshUserPageStream.sink.add(null);
   }
 
-  Future<List<UserModel>> getUsersList(UserModel user) async {
+  Future<List<UserModel>> getUsersList(UserModel user, String token) async {
     // final address = await getIpAddress();
 
     final response = await http.get(
       Uri.parse('http://$backendAdress/users-by-rep/${user.repId}'),
       headers: {
         'Authorization':
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY4NzM3ODUwMCwiZXhwIjoxNjg3MzgyMTAwfQ.O8wI3iNX7zJsNnwR7HW_pdHaJ0zxK7qZymEqSrB103o', // Replace $token with your actual token
+            'Bearer $token', // Replace $token with your actual token
       },
     );
     if (response.statusCode == 200) {
