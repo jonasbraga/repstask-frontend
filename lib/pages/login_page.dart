@@ -143,11 +143,11 @@ class _LoginPageState extends State<LoginPage> {
                 // TextFormField(
                 //   controller: loginController,
                 // ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 200),
+                const Padding(
+                  padding: EdgeInsets.only(top: 200),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const <Widget>[
+                    children: <Widget>[
                       Text("Esqueci a senha"),
                       SizedBox(
                         width: 24,

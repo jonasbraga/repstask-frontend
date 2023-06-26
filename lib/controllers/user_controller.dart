@@ -1,4 +1,4 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
 import 'package:flutter/services.dart';
 import 'dart:convert';
@@ -17,7 +17,7 @@ class UserController {
 
     var data = {
       'name': newUser.name,
-      // 'email': newUser.email,
+      'email': newUser.email,
       'password': newUser.password,
       'nickname': newUser.nickname,
       'photo': newUser.imagePath,
@@ -53,6 +53,52 @@ class UserController {
     }
 
     return 'Endereço IP não encontrado';
+  }
+
+  Future deleteTask(int id) async {
+    final Uri uri = Uri.parse('http://$backendAdress/users/$id');
+    await http.delete(uri);
+    refreshUserPageStream.sink.add(null);
+  }
+
+  Future<List<UserModel>> getUsersList(UserModel user) async {
+    // final address = await getIpAddress();
+
+    final response = await http.get(
+      Uri.parse('http://$backendAdress/users-by-rep/${user.repId}'),
+      headers: {
+        'Authorization':
+            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY4NzM3ODUwMCwiZXhwIjoxNjg3MzgyMTAwfQ.O8wI3iNX7zJsNnwR7HW_pdHaJ0zxK7qZymEqSrB103o', // Replace $token with your actual token
+      },
+    );
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      List<UserModel> results = [];
+      if (body.length > 0) {
+        body.forEach((userJson) {
+          UserModel user = UserModel(
+              id: userJson['id'],
+              name: userJson['name'],
+              email: userJson['email'],
+              imagePath: userJson['photo'],
+              userType: userJson['user_type'],
+              nickname: userJson['nickname'],
+              password: userJson['password'],
+              repId: userJson['reps_id'],
+              nomeRep: userJson['nomeRep'],
+              userPoints: userJson['userPoints'],
+              userDoneTasks: userJson['userDoneTasks']);
+          results.add(user);
+        });
+      }
+      if (user.imagePath == null) {
+        final userPrefer = UserPreferences.myUser;
+        user.imagePath = userPrefer.imagePath;
+      }
+      return results;
+    } else {
+      throw Exception('Failed to load User');
+    }
   }
 
   Future getUsers(UserModel user) async {
