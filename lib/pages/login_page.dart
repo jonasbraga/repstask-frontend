@@ -15,8 +15,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   late LoginModel login;
-  final TextEditingController _republicaController = TextEditingController();
-  final TextEditingController _usuarioController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  // final TextEditingController _usuarioController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
   // final loginController = TextEditingController();
   final TextEditingController _loginController = TextEditingController();
@@ -24,9 +24,9 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    login = widget.loginSended ?? LoginModel(rep: '', usuario: '', senha: '');
-    _republicaController.text = login.rep;
-    _usuarioController.text = login.usuario.toString();
+    login = widget.loginSended ?? LoginModel(email: '', senha: '');
+    _emailController.text = login.email;
+    // _usuarioController.text = login.usuario.toString();
     _senhaController.text = login.senha;
     _loginController.text = '';
   }
@@ -48,38 +48,22 @@ class _LoginPageState extends State<LoginPage> {
                   child: Image.asset('assets/img/logo.png'),
                 ),
                 const Divider(),
-                TextFormField(
-                  autofocus: true,
-                  controller: _republicaController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "República",
-                    labelStyle: TextStyle(color: Colors.black, fontSize: 20),
-                    fillColor: Colors.white,
-                    filled: true,
-                    prefixIcon: Icon(Icons.house),
-                  ),
-                  validator: (rep) {
-                    if (rep == null || rep.isEmpty) {
-                      return 'Digite sua república';
-                    }
-                    return null;
-                  },
-                ),
                 const Divider(),
                 TextFormField(
-                  controller: _usuarioController,
-                  decoration: const InputDecoration(
+                  autofocus: true,
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: "Usuário",
+                    labelText: "E-mail",
                     labelStyle: TextStyle(color: Colors.black, fontSize: 20),
                     fillColor: Colors.white,
                     filled: true,
-                    prefixIcon: Icon(Icons.person),
+                    prefixIcon: const Icon(Icons.email),
                   ),
-                  validator: (usuario) {
-                    if (usuario == null || usuario.isEmpty) {
-                      return 'Digite seu usuário';
+                  validator: (email) {
+                    if (email == null || email.isEmpty) {
+                      return 'Digite seu e-mail';
                     }
                     return null;
                   },
@@ -115,8 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           // Atualizando o objeto login com as informações inseridas pelo usuário
-                          login.rep = _republicaController.text;
-                          login.usuario = _usuarioController.text;
+                          login.email = _emailController.text;
                           login.senha = _senhaController.text;
 
                           // Agora você está passando o objeto atualizado para a função logar()
@@ -143,16 +126,18 @@ class _LoginPageState extends State<LoginPage> {
                 // TextFormField(
                 //   controller: loginController,
                 // ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 200),
+                Padding(
+                  padding: EdgeInsets.only(top: 100),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text("Esqueci a senha"),
+                      Text("Esqueci a senha",
+                      style: const TextStyle(color: Colors.white)),
                       SizedBox(
                         width: 24,
                       ),
-                      Text("Cadastrar república")
+                      Text("Cadastrar república",
+                      style: const TextStyle(color: Colors.white))
                     ],
                   ),
                 )

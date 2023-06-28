@@ -14,8 +14,7 @@ class LoginController {
     final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
 
     var data = {
-      'rep': newLogin.rep,
-      'email': newLogin.usuario,
+      'email': newLogin.email,
       'password': newLogin.senha,
     };
     var body = json.encode(data);
