@@ -4,6 +4,8 @@ import 'package:reptask/components/reward/rewards_list.dart';
 
 import '../components/bottom_modal.dart';
 import '../components/drawer/drawer_content_component.dart';
+import '../utils/user_preferences.dart';
+import '../widget/appbar_widget.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -16,9 +18,8 @@ class _ShopPageState extends State<ShopPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Loja de Pontos'),
-      ),drawer: const Drawer(
+      appBar: buildAppBar(context, 'Loja de Pontos', true, UserPreferences.myUser),
+      drawer: const Drawer(
         child: DrawerContent(),
       ),
       body: Column(
