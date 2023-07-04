@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/bottom_modal.dart';
+import 'package:reptask/components/drawer/drawer_content_component.dart';
 import 'package:reptask/components/user/create_user_modal.dart';
+
+import '../utils/user_preferences.dart';
+import '../widget/appbar_widget.dart';
 
 class MyRepPage extends StatefulWidget {
   const MyRepPage({Key? key}) : super(key: key);
@@ -13,8 +17,9 @@ class _MyRepPageState extends State<MyRepPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('República'),
+      appBar: buildAppBar(context, 'República', true, UserPreferences.myUser),
+      drawer: const Drawer(
+        child: DrawerContent(),
       ),
       body: Container(),
       floatingActionButton: FloatingActionButton(
