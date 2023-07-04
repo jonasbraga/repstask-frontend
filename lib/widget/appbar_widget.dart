@@ -43,7 +43,6 @@ AppBar buildAppBar(
 
   return AppBar(
     title: Text(title),
-    leading: initPage ? const MenuButton() : const BackButton(),
     backgroundColor: primaryColor,
     elevation: 0,
     actions: initPage

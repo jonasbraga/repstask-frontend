@@ -3,6 +3,7 @@ import 'package:reptask/components/reward/create_reward_modal.dart';
 import 'package:reptask/components/reward/rewards_list.dart';
 
 import '../components/bottom_modal.dart';
+import '../components/drawer/drawer_content_component.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -17,6 +18,8 @@ class _ShopPageState extends State<ShopPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Loja de Pontos'),
+      ),drawer: const Drawer(
+        child: DrawerContent(),
       ),
       body: Column(
         children: const [Expanded(child: RewardsList(isAdmUser: true))],

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:reptask/components/task/create_task_modal.dart';
 import 'package:reptask/controllers/streams_controller.dart';
@@ -24,16 +26,23 @@ class ListViewHomeLayout extends StatefulWidget {
 class _ListViewHome extends State<ListViewHomeLayout> {
   TaskController taksController = TaskController();
   List<TaskModel> taksList = [];
+  late StreamSubscription subscription;
 
   @override
   void initState() {
     super.initState();
-    refreshTaskPageStream.stream.listen((event) {
+    subscription = refreshTaskPageStream.stream.listen((event) {
       refreshPage();
     });
     taksController
         .getTasks(taskFilterActive, widget.userId, widget.token)
         .then((taskResults) => setState(() => taksList = taskResults));
+  }
+
+    @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
   }
 
   final icons = [Icons.ac_unit, Icons.access_alarm, Icons.access_time];

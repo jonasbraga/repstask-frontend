@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/bottom_modal.dart';
+import 'package:reptask/components/drawer/drawer_content_component.dart';
 import 'package:reptask/components/user/create_user_modal.dart';
 
 class MyRepPage extends StatefulWidget {
@@ -15,6 +16,9 @@ class _MyRepPageState extends State<MyRepPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('República'),
+      ),
+      drawer: const Drawer(
+        child: DrawerContent(),
       ),
       body: Container(),
       floatingActionButton: FloatingActionButton(
