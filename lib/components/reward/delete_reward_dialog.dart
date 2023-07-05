@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/models/reward_model.dart';
 
+import '../../controllers/reward_controller.dart';
+
 class DeleteRewardDialog extends StatefulWidget {
   const DeleteRewardDialog({super.key, required this.rewardData});
   final RewardModel rewardData;
@@ -10,6 +12,8 @@ class DeleteRewardDialog extends StatefulWidget {
 }
 
 class _DeleteRewardDialogState extends State<DeleteRewardDialog> {
+  RewardController rewardController = RewardController();
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -32,6 +36,7 @@ class _DeleteRewardDialogState extends State<DeleteRewardDialog> {
           ),
           onPressed: () {
             Navigator.pop(context);
+            rewardController.deleteReward(widget.rewardData.id ?? 0);
           },
         )
       ],

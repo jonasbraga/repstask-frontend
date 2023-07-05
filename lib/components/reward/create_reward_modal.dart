@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/models/reward_model.dart';
 
+import '../../controllers/reward_controller.dart';
+
 class CreateRewardModal extends StatefulWidget {
   const CreateRewardModal({super.key, this.rewardDataSended});
   final RewardModel? rewardDataSended;
@@ -74,6 +76,9 @@ class _CreateRewardModalState extends State<CreateRewardModal> {
           margin: const EdgeInsets.only(top: 32, bottom: 36),
           child: TextButton(
               onPressed: () {
+                widget.rewardDataSended != null
+                    ? criarReward()
+                    : updateReward();
                 Navigator.pop(context);
               },
               style: TextButton.styleFrom(
@@ -100,5 +105,16 @@ class _CreateRewardModalState extends State<CreateRewardModal> {
         )
       ],
     );
+  }
+
+  criarReward() {
+    RewardController().createNewReward(RewardModel(
+        pontos: int.tryParse(rewardPointsController.text) ?? 0,
+        titulo: rewardNameController.text));
+  }
+  updateReward() {
+    RewardController().createNewReward(RewardModel(
+        pontos: int.tryParse(rewardPointsController.text) ?? 0,
+        titulo: rewardNameController.text));
   }
 }

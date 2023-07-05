@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/components/reward/buy_reward_dialog.dart';
 import 'package:reptask/components/reward/delete_reward_dialog.dart';
+import 'package:reptask/controllers/reward_controller.dart';
 
+import '../../controllers/streams_controller.dart';
 import '../../models/reward_model.dart';
 import '../bottom_modal.dart';
 import 'create_reward_modal.dart';
@@ -15,10 +17,19 @@ class RewardsList extends StatefulWidget {
 }
 
 class _RewardsListState extends State<RewardsList> {
-  List<RewardModel> rewardList = [
-    RewardModel(pontos: 500, titulo: 'Dar uma pinga'),
-    RewardModel(pontos: 5000, titulo: 'Pizza por conta da casa')
-  ];
+  RewardController rewardController = RewardController();
+  List<RewardModel> rewardList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    refreshUserPageStream.stream.listen((event) {
+      refreshPage();
+    });
+    rewardController
+        .getRewardsList()
+        .then((rewardResults) => setState(() => rewardList = rewardResults));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,5 +106,11 @@ class _RewardsListState extends State<RewardsList> {
             ),
           );
         });
+  }
+
+  Future<void> refreshPage() async {
+    rewardController
+        .getRewardsList()
+        .then((rewardResults) => setState(() => rewardList = rewardResults));
   }
 }
