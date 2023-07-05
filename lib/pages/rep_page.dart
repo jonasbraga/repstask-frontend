@@ -17,7 +17,7 @@ class _MyRepPageState extends State<MyRepPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, 'República', true, UserPreferences.myUser),
+      appBar: buildAppBar(context, 'República', true),
       drawer: const Drawer(
         child: DrawerContent(),
       ),

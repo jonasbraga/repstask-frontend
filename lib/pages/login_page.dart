@@ -156,10 +156,8 @@ class _LoginPageState extends State<LoginPage> {
         debugPrint(user.toString());
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => MyHomePage(
+              builder: (context) => const MyHomePage(
                     title: 'Tarefas',
-                    user: user,
-                    // token: user.token,
                   )),
         );
       }
