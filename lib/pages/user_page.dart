@@ -19,14 +19,14 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, widget.title, true, widget.user),
+      appBar: buildAppBar(context, widget.title, true),
       body: Column(
         children: <Widget>[
           Expanded(
             child: ListViewUserLayout(
                 displayContent: widget.user.userType == 0 ? true : false,
                 user: widget.user,
-                token: widget.user.token!),
+                token: widget.user.token),
           ),
         ],
       ),

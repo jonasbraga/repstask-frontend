@@ -11,7 +11,7 @@ class UserModel {
   String? userDoneTasks;
   bool? isDarkMode;
   int repId;
-  String? token;
+  String token;
 
   UserModel({
     this.id,
@@ -26,7 +26,7 @@ class UserModel {
     this.isDarkMode,
     this.userDoneTasks,
     required this.repId,
-    this.token,
+    required this.token,
   });
 
   // JsonMethods
@@ -37,9 +37,9 @@ class UserModel {
     final nickname = json['nickname'];
     final password = json['password'];
     final userType = json['user_type'];
-    final nomeRep = json['reps_name'];
-    final userPoints = json['userPoints'];
-    final userDoneTasks = json['userDoneTasks'];
+    final nomeRep = json['rep_name'];
+    final userPoints = json['punctuation'];
+    final userDoneTasks = json['finished_tasks'];
     final isDarkMode = json['isDarkMode'];
     final id = json['id'];
     final repId = json['reps_id'];
@@ -71,8 +71,8 @@ class UserModel {
     json['password'] = password;
     json['user_type'] = userType;
     json['reps_id'] = repId;
-    json['reps_name'] = nomeRep;
-    // json['userPoints'] = userPoints;
+    json['rep_name'] = nomeRep;
+    // json['punctuation'] = userPoints;
     json['id'] = id;
     json['userDoneTasks'] = userDoneTasks;
 

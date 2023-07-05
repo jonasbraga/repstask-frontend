@@ -2,21 +2,17 @@ import 'dart:convert';
 
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
-import 'package:reptask/models/user_model.dart';
 import 'package:reptask/pages/profile_page.dart';
-// import 'package:reptask/utils/user_preferences.dart';
-import 'package:reptask/widget/menu_widget.dart';
+import 'package:reptask/utils/user_preferences.dart';
 import '../utils/themes.dart';
 import '../utils/primary_color.dart';
 
-AppBar buildAppBar(
-    BuildContext context, String title, bool initPage, UserModel user) {
+AppBar buildAppBar(BuildContext context, String title, bool initPage) {
   final isDarkMode = Theme.of(context).brightness == Brightness.dark;
   const icon = Icons.nightlight_round;
-  // UserModel user = UserPreferences.myUser;
 
   Widget buildImage() {
-    final bytes = base64.decode(user.imagePath!);
+    final bytes = base64.decode(UserPreferences.myUser.imagePath!);
     final imageProvider = MemoryImage(bytes);
     return ClipOval(
       child: Material(
@@ -30,8 +26,7 @@ AppBar buildAppBar(
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: (context) =>
-                        ProfilePage(title: 'Perfil', user: user)),
+                    builder: (context) => const ProfilePage(title: 'Perfil')),
               );
             },
           ),
@@ -62,7 +57,7 @@ AppBar buildAppBar(
                 child: Row(
                   children: [
                     const SizedBox(width: 6),
-                    Text(user.userPoints!),
+                    Text(UserPreferences.myUser.userPoints!),
                     const SizedBox(width: 6),
                     const Text('Pontos'),
                     const SizedBox(width: 6),

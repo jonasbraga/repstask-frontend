@@ -10,9 +10,8 @@ import '../models/user_model.dart';
 import 'package:reptask/utils/user_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key, required this.title, required this.user})
-      : super(key: key);
-  final UserModel user;
+  const ProfilePage({Key? key, required this.title}) : super(key: key);
+  // final UserModel user;
   final String title;
 
   @override
@@ -39,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return ThemeSwitchingArea(
       child: Builder(
         builder: (context) => Scaffold(
-          appBar: buildAppBar(context, 'Perfil', false, widget.user),
+          appBar: buildAppBar(context, 'Perfil', false),
           body: ListView(
             physics: const BouncingScrollPhysics(),
             children: [
@@ -73,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     textAlign: TextAlign.center,
                                   ),
                                   Text(
-                                    widget.user.userDoneTasks!,
+                                    UserPreferences.myUser.userDoneTasks!,
                                     style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
@@ -85,19 +84,19 @@ class _ProfilePageState extends State<ProfilePage> {
                           Column(
                             children: [
                               ProfileWidget(
-                                imagePath: widget.user.imagePath!,
+                                imagePath: UserPreferences.myUser.imagePath!,
                                 onClicked: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                        builder: (context) => EditProfilePage(
-                                            userInfo: widget.user)),
+                                        builder: (context) =>
+                                            EditProfilePage()),
                                   );
                                 },
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: Text(
-                                    widget.user.userType == 1
+                                    UserPreferences.myUser.userType == 1
                                         ? 'Admin'
                                         : 'Morador',
                                     style: const TextStyle(
@@ -121,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  widget.user.userPoints!,
+                                  UserPreferences.myUser.userPoints!,
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 16,
@@ -136,7 +135,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(widget.user.nickname.toUpperCase(),
+                        child: Text(
+                            UserPreferences.myUser.nickname.toUpperCase(),
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -147,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const SizedBox(height: 24),
-              buildName(widget.user),
+              buildName(),
               const SizedBox(height: 24),
               // buildAbout(user),
             ],
@@ -157,17 +157,17 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget buildName(UserModel user) {
+  Widget buildName() {
     return Column(
       children: [
         const SizedBox(height: 12),
         Text(
-          user.name,
+          UserPreferences.myUser.name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         const SizedBox(height: 12),
         Text(
-          user.email,
+          UserPreferences.myUser.email,
           style: const TextStyle(fontSize: 24),
         ),
         const SizedBox(height: 48),
@@ -177,14 +177,14 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         const SizedBox(height: 6),
         Text(
-          user.nomeRep!,
+          UserPreferences.myUser.nomeRep!,
           style: const TextStyle(fontSize: 24),
         )
       ],
     );
   }
 
-  Widget buildAbout(UserModel user) {
+  Widget buildAbout() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -196,7 +196,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 16),
           Text(
-            user.nickname,
+            UserPreferences.myUser.nickname,
             style: const TextStyle(fontSize: 16, height: 1.4),
           ),
         ],

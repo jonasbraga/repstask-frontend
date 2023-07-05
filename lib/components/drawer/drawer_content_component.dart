@@ -31,8 +31,8 @@ class DrawerContent extends StatelessWidget {
               onTap: () {
                 if (drawerActivePage != 'home') {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => MyHomePage(
-                          title: 'Tarefas', user: UserPreferences.myUser)));
+                      builder: (context) =>
+                          const MyHomePage(title: 'Tarefas')));
                   drawerActivePage = 'home';
                 } else {
                   Navigator.of(context).pop();
@@ -47,8 +47,8 @@ class DrawerContent extends StatelessWidget {
               title: const Text("Loja de Pontos"),
               onTap: () {
                 if (drawerActivePage != 'shop') {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const ShopPage()));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const ShopPage()));
                   drawerActivePage = 'shop';
                 } else {
                   Navigator.of(context).pop();
@@ -63,8 +63,8 @@ class DrawerContent extends StatelessWidget {
               title: const Text("Moradores"),
               onTap: () {
                 if (drawerActivePage != 'rep') {
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => const MyRepPage()));
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) => const MyRepPage()));
                   drawerActivePage = 'rep';
                 } else {
                   Navigator.of(context).pop();
