@@ -12,6 +12,7 @@ class MyHomePage extends StatefulWidget {
       : super(key: key);
   final UserModel user;
   final String title;
+  // final String token;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -38,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: ListViewHomeLayout(
                 displayContent: widget.user.userType == 0 ? true : false,
                 userId: widget.user.id!,
-                token: widget.user.token!),
+                token: widget.user.token),
           ),
         ],
       ),

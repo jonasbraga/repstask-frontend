@@ -132,7 +132,8 @@ class _CreateUserModalState extends State<CreateUserModal> {
         email: userEmailController.text,
         userType: 1,
         // nomeRep: 'Republicão',
-        repId: 1);
+        repId: 1,
+        token: 'a');
     _userController.createNewUser(userData, 1);
   }
 }

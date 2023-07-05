@@ -53,13 +53,13 @@ class _LoginPageState extends State<LoginPage> {
                   autofocus: true,
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "E-mail",
                     labelStyle: TextStyle(color: Colors.black, fontSize: 20),
                     fillColor: Colors.white,
                     filled: true,
-                    prefixIcon: const Icon(Icons.email),
+                    prefixIcon: Icon(Icons.email),
                   ),
                   validator: (email) {
                     if (email == null || email.isEmpty) {
@@ -127,17 +127,17 @@ class _LoginPageState extends State<LoginPage> {
                 //   controller: loginController,
                 // ),
                 Padding(
-                  padding: EdgeInsets.only(top: 100),
+                  padding: const EdgeInsets.only(top: 100),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Text("Esqueci a senha",
-                      style: const TextStyle(color: Colors.white)),
+                          style: TextStyle(color: Colors.white)),
                       SizedBox(
                         width: 24,
                       ),
                       Text("Cadastrar república",
-                      style: const TextStyle(color: Colors.white))
+                          style: TextStyle(color: Colors.white))
                     ],
                   ),
                 )
@@ -153,10 +153,14 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response != null) {
         UserModel user = response;
-
+        debugPrint(user.toString());
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => MyHomePage(title: 'Tarefas', user: user)),
+              builder: (context) => MyHomePage(
+                    title: 'Tarefas',
+                    user: user,
+                    // token: user.token,
+                  )),
         );
       }
     } catch (e) {

@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = UserPreferences.myUser;
 
-    UserModel useeer = UserPreferences.myUser;
+    // UserModel user = UserPreferences.myUser;
     return ThemeProvider(
       initTheme: (user.isDarkMode!) ? MyThemes.darkTheme : MyThemes.lightTheme,
       child: Builder(
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(),
           title: 'Flutter Demo',
           home: const LoginPage(),
-          // home: ProfilePage(user: useeer, title: 'Perfil'),
+          // home: ProfilePage(user: user, title: 'Perfil'),
           // home: ProfilePage(),
           // home: MyHomePage(title: 'Tarefas', user: useeer),
           // home: UserPage(title: 'Usuários', user: useeer),
