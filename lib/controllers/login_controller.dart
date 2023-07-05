@@ -25,19 +25,21 @@ class LoginController {
       var body = jsonDecode(response.body);
 
       if (body != null) {
+        String token = body['token'];
+
         UserModel user = UserModel(
-          id: body['id'],
-          name: body['name'],
-          email: body['email'],
-          imagePath: body['photo'],
-          userType: body['user_type'],
-          nickname: body['nickname'],
-          password: body['password'],
-          repId: body['reps_id'],
-          nomeRep: body['nomeRep'],
-          userPoints: body['userPoints'],
-          userDoneTasks: body['userDoneTasks'],
-          token: body['token'],
+          id: body['user']['id'],
+          name: body['user']['name'],
+          email: body['user']['email'],
+          imagePath: body['user']['photo'],
+          userType: body['user']['user_type'],
+          nickname: body['user']['nickname'],
+          password: body['user']['password'],
+          repId: body['user']['reps_id'],
+          nomeRep: body['user']['rep_name'],
+          userPoints: body['user']['punctuation'],
+          userDoneTasks: body['user']['finished_tasks'],
+          token: token,
           // isDarkMode: body['isDarkMode'],
         );
         if (user.imagePath == null) {
@@ -46,9 +48,14 @@ class LoginController {
         }
         return user;
       } else {
-        return null;
+        throw Exception('Failed to parse user data');
       }
+    } else {
+      debugPrint('StatusCode != 200');
+      //   throw Exception(
+      //       'Failed to create login. Status code: ${response.statusCode}');
+
+      //   // return (user);
     }
-    // return (user);
   }
 }

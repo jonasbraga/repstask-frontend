@@ -10,8 +10,9 @@ import '../models/user_model.dart';
 import '../widget/appbar_widget.dart';
 
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key, required this.userInfo}) : super(key: key);
   final UserModel userInfo;
+
+  const EditProfilePage({Key? key, required this.userInfo}) : super(key: key);
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -22,6 +23,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   UserController userController = UserController();
   late bool _changeSenha = false;
   late bool _showPassword = false;
+  late bool _showErrorDialog = false;
   late bool _showNewPassword = false;
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _userNicknameController = TextEditingController();
@@ -50,7 +52,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     //     );
     _userNameController.text = widget.userInfo.name;
     _userNicknameController.text = widget.userInfo.nickname;
-    _userPasswordController.text = widget.userInfo.password;
+    _userPasswordController.text = '';
     _userNewPasswordController.text = '';
     // _userSenhaController.text = widget.userInfo.password;
   }
@@ -199,8 +201,87 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
       );
 
-  updateUser(UserModel user) {
-    userController.updateUser(user);
-    return user;
+  void updateUser(UserModel user) async {
+    final String currentPassword = _userPasswordController.text;
+    final String newPassword = _userNewPasswordController.text;
+
+    if (currentPassword.isNotEmpty && newPassword.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Aviso'),
+          content: const Text('Por favor, digite uma nova senha.'),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    if (currentPassword.isEmpty && newPassword.isNotEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Aviso'),
+          content: const Text('Por favor, informe a senha atual.'),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    if (currentPassword.isNotEmpty && newPassword.isNotEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => FutureBuilder(
+          future:
+              userController.updatePassword(user, currentPassword, newPassword),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else {
+              if (snapshot.data == 200) {
+                // limpa os campos de senha
+                return AlertDialog(
+                  title: const Text('Senha Alterada'),
+                  content: const Text('Sua senha foi alterada com sucesso.'),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              } else {
+                return AlertDialog(
+                  title: const Text('Aviso'),
+                  content: const Text('Senha inválida.'),
+                  actions: [
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('OK'),
+                    ),
+                  ],
+                );
+              }
+            }
+          },
+        ),
+      );
+
+      _userPasswordController.text = '';
+      _userNewPasswordController.text = '';
+    }
+
+    // userController.updateUser(user);
   }
 }

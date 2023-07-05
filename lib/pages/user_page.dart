@@ -26,7 +26,7 @@ class _UserPageState extends State<UserPage> {
             child: ListViewUserLayout(
                 displayContent: widget.user.userType == 0 ? true : false,
                 user: widget.user,
-                token: widget.user.token!),
+                token: widget.user.token),
           ),
         ],
       ),

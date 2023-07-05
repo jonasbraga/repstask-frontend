@@ -1,5 +1,6 @@
 // import 'dart:ffi';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -77,17 +78,19 @@ class UserController {
       if (body.length > 0) {
         body.forEach((userJson) {
           UserModel user = UserModel(
-              id: userJson['id'],
-              name: userJson['name'],
-              email: userJson['email'],
-              imagePath: userJson['photo'],
-              userType: userJson['user_type'],
-              nickname: userJson['nickname'],
-              password: userJson['password'],
-              repId: userJson['reps_id'],
-              nomeRep: userJson['nomeRep'],
-              userPoints: userJson['userPoints'],
-              userDoneTasks: userJson['userDoneTasks']);
+            id: userJson['id'],
+            name: userJson['name'],
+            email: userJson['email'],
+            imagePath: userJson['photo'],
+            userType: userJson['user_type'],
+            nickname: userJson['nickname'],
+            password: userJson['password'],
+            repId: userJson['reps_id'],
+            nomeRep: userJson['nomeRep'],
+            userPoints: userJson['userPoints'],
+            userDoneTasks: userJson['userDoneTasks'],
+            token: token,
+          );
           results.add(user);
         });
       }
@@ -101,62 +104,85 @@ class UserController {
     }
   }
 
-  Future getUsers(UserModel user) async {
-    final address = await getIpAddress();
+  // Future getUsers(UserModel user) async {
+  //   final address = await getIpAddress();
 
-    final response = await http.get(
-      Uri.parse('http://$backendAdress/users/2'),
-      headers: {'Origin': address},
-    );
-    if (response.statusCode == 200) {
-      var body = jsonDecode(response.body);
+  //   final response = await http.get(
+  //     Uri.parse('http://$backendAdress/users/2'),
+  //     headers: {'Origin': address},
+  //   );
+  //   if (response.statusCode == 200) {
+  //     var body = jsonDecode(response.body);
 
-      if (body != null) {
-        UserModel user = UserModel(
-          id: body['id'],
-          name: body['name'],
-          email: body['email'],
-          imagePath: body['photo'],
-          userType: body['user_type'],
-          nickname: body['nickname'],
-          password: body['password'],
-          repId: body['reps_id'],
-          nomeRep: body['nomeRep'],
-          userPoints: body['userPoints'],
-          userDoneTasks: body['userDoneTasks'],
-          // isDarkMode: body['isDarkMode'],
-        );
-        if (user.imagePath == null) {
-          final userPrefer = UserPreferences.myUser;
-          user.imagePath = userPrefer.imagePath;
-        }
-        return user;
-      } else {
-        throw Exception('Failed to load User');
-      }
-    }
-  }
+  //     if (body != null) {
+  //       UserModel user = UserModel(
+  //         id: body['id'],
+  //         name: body['name'],
+  //         email: body['email'],
+  //         imagePath: body['photo'],
+  //         userType: body['user_type'],
+  //         nickname: body['nickname'],
+  //         password: body['password'],
+  //         repId: body['reps_id'],
+  //         nomeRep: body['nomeRep'],
+  //         userPoints: body['userPoints'],
+  //         userDoneTasks: body['userDoneTasks'],
+  //         token: token,
+  //         // isDarkMode: body['isDarkMode'],
+  //       );
+  //       if (user.imagePath == null) {
+  //         final userPrefer = UserPreferences.myUser;
+  //         user.imagePath = userPrefer.imagePath;
+  //       }
+  //       return user;
+  //     } else {
+  //       throw Exception('Failed to load User');
+  //     }
+  //   }
+  // }
 
   Future updateUser(UserModel user) async {
     final Uri uri = Uri.parse('http://$backendAdress/users/${user.id}');
-    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      'Authorization': 'Bearer ${user.token}',
+    };
 
     var data = {
       'name': user.name,
-      // 'email': user.email,
       'nickname': user.nickname,
-      'password': user.password,
       'photo': user.imagePath,
-      // 'nomeRep': user.nomeRep,
-      // 'user_type': user.userType,
-      // 'reps_id': user.nomeRep,
-      // 'isDarkMode': newUser.isDarkMode,
-      // 'id': user.id,
-      // 'userPoints': user.userPoints,
     };
     var body = json.encode(data);
 
     final response = await http.patch(uri, headers: headers, body: body);
     refreshUserPageStream.sink.add(null);
+  }
+
+  Future updatePassword(
+      UserModel user, String currentPassword, String newPassword) async {
+    final Uri uri =
+        Uri.parse('http://$backendAdress/change-password/${user.id}');
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      'Authorization': 'Bearer ${user.token}',
+    };
+    var data = {
+      'oldPassword': currentPassword,
+      'newPassword': newPassword,
+    };
+    var body = json.encode(data);
+
+    final response = await http.post(uri, headers: headers, body: body);
+    debugPrint(response.toString());
+    refreshUserPageStream.sink.add(null);
+    // if (response.statusCode == 200) {
+    return response.statusCode;
+    // } else {
+    //   return false;
+    // throw Exception(
+    //     'Failed to create login. Status code: ${response.statusCode}');
+    // // return (user);
+    // }
   }
 }
