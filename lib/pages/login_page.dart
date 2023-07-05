@@ -159,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
               builder: (context) => MyHomePage(
                     title: 'Tarefas',
                     user: user,
-                    token: user.token,
+                    // token: user.token,
                   )),
         );
       }

@@ -8,12 +8,11 @@ import '../components/bottom_modal.dart';
 import '../components/task/filter_task_component.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage(
-      {Key? key, required this.title, required this.user, required this.token})
+  const MyHomePage({Key? key, required this.title, required this.user})
       : super(key: key);
   final UserModel user;
   final String title;
-  final String token;
+  // final String token;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -40,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: ListViewHomeLayout(
                 displayContent: widget.user.userType == 0 ? true : false,
                 userId: widget.user.id!,
-                token: widget.token),
+                token: widget.user.token),
           ),
         ],
       ),
