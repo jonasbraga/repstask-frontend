@@ -18,7 +18,7 @@ class _ShopPageState extends State<ShopPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, 'Loja de Pontos', true, UserPreferences.myUser),
+      appBar: buildAppBar(context, 'Loja de Pontos', true),
       drawer: const Drawer(
         child: DrawerContent(),
       ),

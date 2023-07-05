@@ -19,7 +19,7 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(context, widget.title, true, widget.user),
+      appBar: buildAppBar(context, widget.title, true),
       body: Column(
         children: <Widget>[
           Expanded(
