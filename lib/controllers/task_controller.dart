@@ -7,6 +7,7 @@ import 'package:reptask/configs/config.dart';
 import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/models/task_model.dart';
 import 'package:reptask/models/trask_filters_model.dart';
+import 'package:reptask/utils/user_preferences.dart';
 
 class TaskController {
   Future createTask(TaskModel newTask) async {
@@ -80,6 +81,7 @@ class TaskController {
   Future<List<TaskModel>> getTasks(
       TaskFilterModel filters, int userId, String token) async {
     var filterOption = 2;
+    var rep = UserPreferences.myUser.repId;
 
     if (filters.showPendentsTasks || filters.showFinishedTasks) {
       filterOption = filters.showPendentsTasks ? 0 : 1;
@@ -88,7 +90,8 @@ class TaskController {
     var userIdIfFiltered = filters.onlyMyTasks ? userId : '';
     // var token =  token;
     final response = await http.get(
-      Uri.parse('http://$backendAdress/tasks/$filterOption/$userIdIfFiltered'),
+      Uri.parse(
+          'http://$backendAdress/tasks/$filterOption/$rep/$userIdIfFiltered'),
       // Send authorization token in the 'Authorization' header
       headers: {
         'Authorization':
@@ -110,7 +113,10 @@ class TaskController {
               responsavel: taskJson['responsible_user'].toString(),
               titulo: taskJson['title'],
               descricao: taskJson['description'],
-              id: taskJson['id']);
+              id: taskJson['id'],
+              responsavelPhoto: taskJson['photo'],
+              responsavelName: taskJson['name']);
+
           results.add(task);
         });
       }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:reptask/components/task/create_task_modal.dart';
@@ -6,6 +7,7 @@ import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/controllers/task_controller.dart';
 import 'package:reptask/models/task_model.dart';
 import 'package:reptask/models/trask_filters_model.dart';
+import '../../utils/user_preferences.dart';
 import '../bottom_modal.dart';
 import 'task_details_component.dart';
 
@@ -39,13 +41,32 @@ class _ListViewHome extends State<ListViewHomeLayout> {
         .then((taskResults) => setState(() => taksList = taskResults));
   }
 
-    @override
+  @override
   void dispose() {
     subscription.cancel();
     super.dispose();
   }
 
   final icons = [Icons.ac_unit, Icons.access_alarm, Icons.access_time];
+
+  Widget buildImage(image) {
+    final bytes =
+        base64.decode(image != '' ? image : UserPreferences.imageUserDefaut);
+    final imageProvider = MemoryImage(bytes);
+    return ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: Ink.image(
+          image: imageProvider,
+          fit: BoxFit.cover,
+          width: 32,
+          height: 32,
+        ),
+      ),
+    );
+    //
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -68,7 +89,9 @@ class _ListViewHome extends State<ListViewHomeLayout> {
                     spacing: 12, // space between two icons
                     alignment: WrapAlignment.center,
                     children: <Widget>[
-                      if (widget.displayContent) const CircleAvatar(),
+                      if (widget.displayContent)
+                        buildImage(taksList[index].responsavelPhoto ?? ''),
+                      Text(taksList[index].responsavelName ?? 'morador'),
                       if (widget.displayContent)
                         IconButton(
                           icon: const Icon(Icons.arrow_forward_ios_rounded),

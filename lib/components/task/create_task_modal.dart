@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:reptask/controllers/task_controller.dart';
+import 'package:reptask/controllers/user_controller.dart';
 import 'package:reptask/models/task_model.dart';
+import 'package:reptask/models/user_model.dart';
+
+import '../../utils/user_preferences.dart';
 
 class CreateTaskModal extends StatefulWidget {
   const CreateTaskModal({super.key, this.taskDataSended});
@@ -12,16 +16,15 @@ class CreateTaskModal extends StatefulWidget {
 }
 
 class _CreateTaskModalState extends State<CreateTaskModal> {
+  UserController userController = UserController();
   late TaskModel taskData;
   final TextEditingController _taskTitleController = TextEditingController();
   final TextEditingController _taskPointsController = TextEditingController();
   final TextEditingController _taskDeadlineController = TextEditingController();
   final TextEditingController _taskDescriptionController =
       TextEditingController();
-  List<DropdownMenuItem<String>> responsaveis = [
-    const DropdownMenuItem(value: "1", child: Text("Barbosa")),
-    const DropdownMenuItem(value: "2", child: Text("João Pedro"))
-  ]; //Alterar o get de responsáveis
+
+  List<UserModel> userList = [];
 
   @override
   void initState() {
@@ -38,6 +41,13 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
     _taskDeadlineController.text =
         DateFormat('dd/MM/yyyy').format(taskData.prazo);
     _taskDescriptionController.text = taskData.descricao ?? '';
+
+    userController
+        .getUsersList(UserPreferences.myUser, UserPreferences.myUser.token)
+        .then((usersresults) => {
+              debugPrint(usersresults.length.toString()),
+              setState(() => userList = usersresults)
+            });
   }
 
   @override
@@ -114,8 +124,13 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
         Container(
           margin: const EdgeInsets.only(bottom: 12),
           child: DropdownButtonFormField(
-            value: taskData.responsavel,
-            items: responsaveis,
+            value: userList[0].id.toString(),
+            items: userList.map((responsavel) {
+              return DropdownMenuItem(
+                value: responsavel.id.toString(),
+                child: Text(responsavel.name),
+              );
+            }).toList(),
             decoration: const InputDecoration(
                 labelText: 'Responsável',
                 filled: true,

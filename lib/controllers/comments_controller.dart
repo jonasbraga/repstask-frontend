@@ -38,6 +38,7 @@ class CommentsController {
             taskId: commentJson['task_id'],
             userId: commentJson['user_id'],
             userNick: commentJson['nickname'],
+            userPhoto: commentJson['photo'],
           );
           results.add(comment);
         });

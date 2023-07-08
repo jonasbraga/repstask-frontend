@@ -5,12 +5,16 @@ class TaskModel {
   String? descricao;
   DateTime prazo;
   String responsavel;
+  String? responsavelPhoto;
+  String? responsavelName;
 
   TaskModel({
     required this.titulo,
     required this.pontos,
     required this.responsavel,
     required this.prazo,
+    this.responsavelPhoto,
+    this.responsavelName,
     this.id,
     this.descricao,
   });
@@ -22,12 +26,16 @@ class TaskModel {
     final descricao = json['description'];
     final responsavel = json['responsable_user'];
     final prazo = json['deadline'];
+    final responsavelPhoto = json['photo'];
+    final responsavelName = json['name'];
 
     return TaskModel(
         titulo: titulo,
         pontos: pontos,
         descricao: descricao,
         prazo: prazo,
+        responsavelPhoto: responsavelPhoto,
+        responsavelName: responsavelName,
         responsavel: responsavel);
   }
 
@@ -37,6 +45,8 @@ class TaskModel {
     json['value'] = pontos;
     json['description'] = descricao;
     json['responsable_user'] = responsavel;
+    json['photo'] = responsavelPhoto;
+    json['name'] = responsavelName;
 
     return json;
   }

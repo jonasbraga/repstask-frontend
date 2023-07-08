@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/models/user_model.dart';
 import '../../controllers/user_controller.dart';
+import '../../utils/user_preferences.dart';
 
 class ListViewUserLayout extends StatefulWidget {
   const ListViewUserLayout(
@@ -33,6 +36,25 @@ class _ListViewHome extends State<ListViewUserLayout> {
   }
 
   final icons = [Icons.ac_unit, Icons.access_alarm, Icons.access_time];
+
+  Widget buildImage(image) {
+    final bytes =
+        base64.decode(image != '' ? image : UserPreferences.imageUserDefaut);
+    final imageProvider = MemoryImage(bytes);
+    return ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: Ink.image(
+          image: imageProvider,
+          fit: BoxFit.cover,
+          width: 32,
+          height: 32,
+        ),
+      ),
+    );
+    //
+  }
+
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
@@ -43,16 +65,10 @@ class _ListViewHome extends State<ListViewUserLayout> {
             return Card(
                 key: ValueKey(index),
                 child: ListTile(
-                  // onTap: () {
-                  //   showModal(
-                  //     context,
-                  //     CreateCommentsModal(taskData: userList[index]),
-                  //   );
-                  // },
                   leading: Wrap(
                     alignment: WrapAlignment.center,
                     children: [
-                      CircleAvatar(),
+                      buildImage(userList[index].imagePath ?? ''),
                     ],
                   ),
                   title: Text(userList[index].name),
@@ -61,15 +77,7 @@ class _ListViewHome extends State<ListViewUserLayout> {
                     spacing: 12, // space between two icons
                     alignment: WrapAlignment.center,
                     children: <Widget>[
-                      // Column(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       Text(
-                      //         'Texto 1',
-                      //         style: TextStyle(fontSize: 20),
-                      //       ),
-                      //     ]),
-                      // Text(userList[index].userType.toString()),
+                      Text(userList[index].userPoints ?? '0'),
                       if (!widget.displayContent)
                         IconButton(
                           icon: const Icon(Icons.delete),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:reptask/models/user_model.dart';
 import 'package:reptask/widget/appbar_widget.dart';
 import '../components/bottom_modal.dart';
+import '../components/drawer/drawer_content_component.dart';
 import '../components/user/create_user_modal.dart';
 import '../components/user/user_list.dart';
 
@@ -20,6 +21,9 @@ class _UserPageState extends State<UserPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context, widget.title, true),
+      drawer: const Drawer(
+        child: DrawerContent(),
+      ),
       body: Column(
         children: <Widget>[
           Expanded(
