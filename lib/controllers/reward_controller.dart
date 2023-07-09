@@ -56,7 +56,7 @@ class RewardController {
     refreshRewardsPageStream.sink.add(null);
   }
 
-   Future updateUser(RewardModel reward) async {
+  Future updateUser(RewardModel reward) async {
     final Uri uri = Uri.parse('http://$backendAdress/items/${reward.id}');
     final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
 

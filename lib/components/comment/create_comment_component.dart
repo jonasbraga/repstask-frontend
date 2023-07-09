@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/controllers/comments_controller.dart';
 import 'package:reptask/models/comments_model.dart';
+import 'package:reptask/utils/user_preferences.dart';
 
 class CreateCommentComponent extends StatefulWidget {
   const CreateCommentComponent({super.key, required this.taskId});
@@ -93,7 +94,10 @@ class _CreateCommentComponentState extends State<CreateCommentComponent> {
 
   createComment(String commentTyped, int taskId) {
     Comment comment = Comment(
-        comment: commentTyped, taskId: taskId, userId: 1, userNick: 'Barbosa');
+        comment: commentTyped,
+        taskId: taskId,
+        userId: UserPreferences.myUser.id!,
+        userNick: UserPreferences.myUser.nickname);
     _commentsController.registerComment(comment);
   }
 }

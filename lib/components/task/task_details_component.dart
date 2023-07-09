@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:reptask/components/bottom_modal.dart';
@@ -8,6 +9,8 @@ import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/controllers/task_controller.dart';
 import 'package:reptask/models/comments_model.dart';
 import 'package:reptask/models/task_model.dart';
+
+import '../../utils/user_preferences.dart';
 
 class CreateCommentsModal extends StatefulWidget {
   const CreateCommentsModal({super.key, required this.taskData});
@@ -27,6 +30,8 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
   late TaskModel taskData;
   List<Comment> commentsList = [];
   late StreamSubscription subscription;
+
+  // get index => null;
   //Alterar o get de responsáveis
 
   @override
@@ -50,6 +55,24 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
   void dispose() {
     subscription.cancel();
     super.dispose();
+  }
+
+  Widget buildImage(image) {
+    final bytes =
+        base64.decode(image != '' ? image : UserPreferences.imageUserDefaut);
+    final imageProvider = MemoryImage(bytes);
+    return ClipOval(
+      child: Material(
+        color: Colors.transparent,
+        child: Ink.image(
+          image: imageProvider,
+          fit: BoxFit.cover,
+          width: 32,
+          height: 32,
+        ),
+      ),
+    );
+    //
   }
 
   @override
@@ -76,12 +99,7 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
                   letterSpacing: 0.15,
                   color: Color.fromRGBO(0, 0, 0, 0.7)),
             ),
-            const CircleAvatar(
-              radius: 12,
-              backgroundImage: NetworkImage(
-                'https://source.unsplash.com/50x50/?portrait',
-              ),
-            ),
+            buildImage(widget.taskData.responsavelPhoto ?? ''),
           ]),
         ),
         Row(
@@ -142,11 +160,8 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
                   itemBuilder: (context, index) {
                     return Card(
                       child: ListTile(
-                        leading: const CircleAvatar(
-                          radius: 12,
-                          backgroundImage: NetworkImage(
-                              'https://source.unsplash.com/50x50/?portrait'),
-                        ),
+                        leading:
+                            buildImage(commentsList[index].userPhoto ?? ''),
                         title: Text(commentsList[index].userNick),
                         subtitle: Text(commentsList[index].comment),
                       ),

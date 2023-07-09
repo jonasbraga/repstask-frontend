@@ -86,9 +86,9 @@ class UserController {
             nickname: userJson['nickname'],
             password: userJson['password'],
             repId: userJson['reps_id'],
-            nomeRep: userJson['nomeRep'],
-            userPoints: userJson['userPoints'],
-            userDoneTasks: userJson['userDoneTasks'],
+            nomeRep: userJson['rep_name'],
+            userPoints: userJson['punctuation'],
+            userDoneTasks: userJson['finished_tasks'],
             token: token,
           );
           results.add(user);

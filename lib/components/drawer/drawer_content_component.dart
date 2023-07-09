@@ -3,6 +3,7 @@ import 'package:reptask/pages/rep_page.dart';
 
 import '../../pages/home_page.dart';
 import '../../pages/shop_page.dart';
+import '../../pages/user_page.dart';
 import '../../utils/user_preferences.dart';
 
 var drawerActivePage = '';
@@ -64,7 +65,8 @@ class DrawerContent extends StatelessWidget {
               onTap: () {
                 if (drawerActivePage != 'rep') {
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const MyRepPage()));
+                      builder: (context) => UserPage(
+                          title: 'Moradores', user: UserPreferences.myUser)));
                   drawerActivePage = 'rep';
                 } else {
                   Navigator.of(context).pop();
