@@ -5,11 +5,16 @@ import 'package:reptask/controllers/streams_controller.dart';
 import 'package:reptask/models/comments_model.dart';
 
 import '../configs/config.dart';
+import '../utils/user_preferences.dart';
 
 class CommentsController {
   Future registerComment(Comment comment) async {
     final Uri uri = Uri.parse('http://$backendAdress/comments');
-    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final token = UserPreferences.myUser.token;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
 
     var data = {
       'task_id': comment.taskId,
@@ -25,8 +30,13 @@ class CommentsController {
 
   Future<List<Comment>> getComments(int taskId) async {
     final Uri uri = Uri.parse('http://$backendAdress/comments/$taskId');
+    final token = UserPreferences.myUser.token;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
 
-    final response = await http.get(uri);
+    final response = await http.get(uri, headers: headers);
 
     List<Comment> results = [];
     if (response.statusCode == 200) {

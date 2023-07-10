@@ -12,7 +12,11 @@ import 'package:reptask/utils/user_preferences.dart';
 class TaskController {
   Future createTask(TaskModel newTask) async {
     final Uri uri = Uri.parse('http://$backendAdress/tasks');
-    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final token = UserPreferences.myUser.token;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
 
     var data = {
       'title': newTask.titulo,
@@ -33,7 +37,11 @@ class TaskController {
   Future updateTask(TaskModel newTask) async {
     var id = newTask.id.toString();
     final Uri uri = Uri.parse('http://$backendAdress/tasks/$id');
-    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final token = UserPreferences.myUser.token;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
 
     var data = {
       'title': newTask.titulo,
@@ -53,14 +61,23 @@ class TaskController {
 
   Future deleteTask(int id) async {
     final Uri uri = Uri.parse('http://$backendAdress/tasks/$id');
-    await http.delete(uri);
+    final token = UserPreferences.myUser.token;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
+    await http.delete(uri, headers: headers);
     refreshTaskPageStream.sink.add(taskFilterActive);
   }
 
   Future finishTask(TaskModel taskToFinish) async {
     var id = taskToFinish.id.toString();
     final Uri uri = Uri.parse('http://$backendAdress/tasks/$id');
-    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final token = UserPreferences.myUser.token;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
 
     var data = {
       'title': taskToFinish.titulo,
@@ -113,7 +130,8 @@ class TaskController {
               responsavel: taskJson['responsible_user'].toString(),
               titulo: taskJson['title'],
               descricao: taskJson['description'],
-              id: taskJson['id'],
+              id: taskJson['task_id'],
+              responsavelId: taskJson['id'],
               responsavelPhoto: taskJson['photo'],
               responsavelName: taskJson['name']);
 
