@@ -11,7 +11,11 @@ import 'package:reptask/utils/user_preferences.dart';
 class LoginController {
   Future<UserModel?> createLogin(LoginModel newLogin) async {
     final Uri uri = Uri.parse('http://$backendAdress/login');
-    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final token = UserPreferences.myUser.token;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
 
     var data = {
       'email': newLogin.email,
@@ -37,10 +41,10 @@ class LoginController {
         UserPreferences.myUser.password = body['user']['password'];
         UserPreferences.myUser.repId = body['user']['reps_id'];
         UserPreferences.myUser.nomeRep = body['user']['rep_name'];
-        UserPreferences.myUser.userPoints = body['user']['punctuation'];
+        UserPreferences.myUser.userPoints =
+            body['user']['punctuation'].toString();
         UserPreferences.myUser.userDoneTasks = body['user']['finished_tasks'];
         UserPreferences.myUser.token = token;
-
         UserModel user = UserModel(
           id: body['user']['id'],
           name: body['user']['name'],
@@ -51,7 +55,7 @@ class LoginController {
           password: body['user']['password'],
           repId: body['user']['reps_id'],
           nomeRep: body['user']['rep_name'],
-          userPoints: body['user']['punctuation'],
+          userPoints: body['user']['punctuation'].toString(),
           userDoneTasks: body['user']['finished_tasks'],
           token: token,
           // isDarkMode: body['isDarkMode'],

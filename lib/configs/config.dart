@@ -1,1 +1,1 @@
-const backendAdress = '192.168.1.3:3000';
+const backendAdress = '18.204.213.244:3000';

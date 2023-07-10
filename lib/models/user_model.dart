@@ -38,7 +38,7 @@ class UserModel {
     final password = json['password'];
     final userType = json['user_type'];
     final nomeRep = json['rep_name'];
-    final userPoints = json['punctuation'];
+    final userPoints = json['punctuation'].toString();
     final userDoneTasks = json['finished_tasks'];
     final isDarkMode = json['isDarkMode'];
     final id = json['id'];
