@@ -172,31 +172,33 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
             ],
           ),
         ),
-        Container(
-          width: 154,
-          height: 36,
-          margin: const EdgeInsets.only(top: 32, bottom: 78),
-          child: TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                finishTask();
-              },
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.all(8.0),
-                backgroundColor: const Color.fromRGBO(70, 4, 138, 1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4),
+        if (UserPreferences.myUser.userType == 1 ||
+            UserPreferences.myUser.id == widget.taskData.responsavelId)
+          Container(
+            width: 154,
+            height: 36,
+            margin: const EdgeInsets.only(top: 32, bottom: 78),
+            child: TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  finishTask();
+                },
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.all(8.0),
+                  backgroundColor: const Color.fromRGBO(70, 4, 138, 1),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4),
+                  ),
                 ),
-              ),
-              child: const Text(
-                'FINALIZAR',
-                style: TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 1.25,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500),
-              )),
-        )
+                child: const Text(
+                  'FINALIZAR',
+                  style: TextStyle(
+                      color: Colors.white,
+                      letterSpacing: 1.25,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500),
+                )),
+          )
       ],
     );
   }

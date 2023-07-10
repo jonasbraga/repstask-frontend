@@ -58,7 +58,11 @@ class RewardController {
 
   Future updateUser(RewardModel reward) async {
     final Uri uri = Uri.parse('http://$backendAdress/items/${reward.id}');
-    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final token = UserPreferences.myUser.token;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
 
     var data = {
       'id': reward.id,

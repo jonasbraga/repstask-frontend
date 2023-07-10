@@ -14,7 +14,11 @@ import 'package:reptask/utils/user_preferences.dart';
 class UserController {
   Future createNewUser(UserModel newUser, int repId) async {
     final Uri uri = Uri.parse('http://$backendAdress/users');
-    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final token = UserPreferences.myUser.token;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
 
     var data = {
       'name': newUser.name,
@@ -58,7 +62,12 @@ class UserController {
 
   Future deleteTask(int id) async {
     final Uri uri = Uri.parse('http://$backendAdress/users/$id');
-    await http.delete(uri);
+    final token = UserPreferences.myUser.token;
+    final headers = {
+      'Authorization': 'Bearer $token',
+      HttpHeaders.contentTypeHeader: 'application/json'
+    };
+    await http.delete(uri, headers: headers);
     refreshUserPageStream.sink.add(null);
   }
 
@@ -87,7 +96,7 @@ class UserController {
             password: userJson['password'],
             repId: userJson['reps_id'],
             nomeRep: userJson['rep_name'],
-            userPoints: userJson['punctuation'],
+            userPoints: userJson['punctuation'].toString(),
             userDoneTasks: userJson['finished_tasks'],
             token: token,
           );

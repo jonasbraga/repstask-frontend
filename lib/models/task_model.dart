@@ -7,6 +7,7 @@ class TaskModel {
   String responsavel;
   String? responsavelPhoto;
   String? responsavelName;
+  int? responsavelId;
 
   TaskModel({
     required this.titulo,
@@ -15,6 +16,7 @@ class TaskModel {
     required this.prazo,
     this.responsavelPhoto,
     this.responsavelName,
+    this.responsavelId,
     this.id,
     this.descricao,
   });
@@ -28,6 +30,7 @@ class TaskModel {
     final prazo = json['deadline'];
     final responsavelPhoto = json['photo'];
     final responsavelName = json['name'];
+    final responsavelId = json['id'];
 
     return TaskModel(
         titulo: titulo,
@@ -36,6 +39,7 @@ class TaskModel {
         prazo: prazo,
         responsavelPhoto: responsavelPhoto,
         responsavelName: responsavelName,
+        responsavelId: responsavelId,
         responsavel: responsavel);
   }
 
@@ -47,6 +51,7 @@ class TaskModel {
     json['responsable_user'] = responsavel;
     json['photo'] = responsavelPhoto;
     json['name'] = responsavelName;
+    json['id'] = responsavelId;
 
     return json;
   }
