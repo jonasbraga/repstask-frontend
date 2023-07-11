@@ -280,6 +280,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _userNewPasswordController.text = '';
     }
 
-    // userController.updateUser(user);
+    userController.updateUser(user);
   }
 }
