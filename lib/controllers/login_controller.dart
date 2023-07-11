@@ -8,6 +8,8 @@ import 'package:reptask/models/user_model.dart';
 import 'package:reptask/utils/default_image.dart';
 import 'package:reptask/utils/user_preferences.dart';
 
+import '../models/rep_model.dart';
+
 class LoginController {
   Future<UserModel?> createLogin(LoginModel newLogin) async {
     final Uri uri = Uri.parse('http://$backendAdress/login');
@@ -75,5 +77,20 @@ class LoginController {
 
       //   // return (user);
     }
+  }
+
+  Future createNewRequestRep(RepModel rep) async {
+    var data = {
+      'name': rep.name,
+      'email': rep.email,
+      'password': rep.password,
+      'nickname': rep.nickname,
+      'nameRep': rep.nameRep,
+    };
+    var body = json.encode(data);
+    final Uri uri = Uri.parse('http://$backendAdress/newRep');
+    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final response = await http.post(uri, headers: headers, body: body);
+    return response.statusCode;
   }
 }
