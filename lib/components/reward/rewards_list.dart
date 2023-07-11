@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:reptask/components/reward/buy_reward_dialog.dart';
 import 'package:reptask/components/reward/delete_reward_dialog.dart';
@@ -5,12 +7,12 @@ import 'package:reptask/controllers/reward_controller.dart';
 
 import '../../controllers/streams_controller.dart';
 import '../../models/reward_model.dart';
+import '../../utils/user_preferences.dart';
 import '../bottom_modal.dart';
 import 'create_reward_modal.dart';
 
 class RewardsList extends StatefulWidget {
-  const RewardsList({super.key, required this.isAdmUser});
-  final bool isAdmUser;
+  const RewardsList({super.key});
 
   @override
   State<RewardsList> createState() => _RewardsListState();
@@ -19,16 +21,23 @@ class RewardsList extends StatefulWidget {
 class _RewardsListState extends State<RewardsList> {
   RewardController rewardController = RewardController();
   List<RewardModel> rewardList = [];
+  late StreamSubscription subscription;
 
   @override
   void initState() {
     super.initState();
-    refreshUserPageStream.stream.listen((event) {
+    subscription = refreshRewardsPageStream.stream.listen((event) {
       refreshPage();
     });
     rewardController
         .getRewardsList()
         .then((rewardResults) => setState(() => rewardList = rewardResults));
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
   }
 
   @override
@@ -52,7 +61,7 @@ class _RewardsListState extends State<RewardsList> {
                 spacing: 12,
                 alignment: WrapAlignment.center,
                 children: [
-                  if (widget.isAdmUser)
+                  if (UserPreferences.myUser.userType == 1)
                     StatefulBuilder(builder: (context, setState) {
                       return PopupMenuButton<String>(
                           onSelected: (value) {
