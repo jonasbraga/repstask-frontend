@@ -34,21 +34,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
 
-    // UserPreferences.myUser = UserPreferences.myUser ??
-    //     UserModel(
-    //       imagePath: 'Sem Imagem',
-    //       name: 'name',
-    //       email: 'email',
-    //       nickname: 'nickname',
-    //       password: '12345678',
-    //       userType: 0,
-    //       nomeRep: 'nomeRep',
-    //       isDarkMode: false,
-    //       userPoints: 'userPoints',
-    //       userDoneTasks: 'userDoneTasks',
-    //       repId: 1,
-    //       id: 2,
-    //     );
     _userNameController.text = UserPreferences.myUser.name;
     _userNicknameController.text = UserPreferences.myUser.nickname;
     _userPasswordController.text = '';
@@ -303,6 +288,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _userNewPasswordController.text = '';
     }
 
-    // userController.updateUser(user);
+    userController.updateUser(user);
   }
 }

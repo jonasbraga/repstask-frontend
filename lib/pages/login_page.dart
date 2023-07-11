@@ -4,6 +4,9 @@ import 'package:reptask/models/login_model.dart';
 import 'package:reptask/models/user_model.dart';
 import 'package:reptask/pages/home_page.dart';
 
+import '../components/bottom_modal.dart';
+import '../components/user/create_rep_modal.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key, this.loginSended});
   final LoginModel? loginSended;
@@ -130,14 +133,19 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(top: 100),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const <Widget>[
-                      Text("Esqueci a senha",
-                          style: TextStyle(color: Colors.white)),
-                      SizedBox(
-                        width: 24,
-                      ),
-                      Text("Cadastrar república",
-                          style: TextStyle(color: Colors.white))
+                    children: <Widget>[
+                      // const Text("Esqueci a senha",
+                      //     style: TextStyle(color: Colors.white)),
+                      // const SizedBox(
+                      //   width: 24,
+                      // ),
+                      InkWell(
+                        onTap: () {
+                          showModal(context, const CreateRepModal());
+                        },
+                        child: const Text("Cadastrar república",
+                            style: TextStyle(color: Colors.white)),
+                      )
                     ],
                   ),
                 )
@@ -152,18 +160,29 @@ class _LoginPageState extends State<LoginPage> {
       UserModel? response = await LoginController().createLogin(login);
 
       if (response != null) {
-        UserModel user = response;
-        debugPrint(user.toString());
         Navigator.of(context).push(
           MaterialPageRoute(
               builder: (context) => const MyHomePage(
                     title: 'Tarefas',
                   )),
         );
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Aviso'),
+            content: const Text('Dados Incorretos'),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
       }
     } catch (e) {
-      debugPrint('Failed to login: $e');
-      // handle the error appropriately
+      // debugPrint('Failed to login: $e');
     }
   }
 }

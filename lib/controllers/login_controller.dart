@@ -8,6 +8,8 @@ import 'package:reptask/models/user_model.dart';
 import 'package:reptask/utils/default_image.dart';
 import 'package:reptask/utils/user_preferences.dart';
 
+import '../models/rep_model.dart';
+
 class LoginController {
   Future<UserModel?> createLogin(LoginModel newLogin) async {
     final Uri uri = Uri.parse('http://$backendAdress/login');
@@ -22,9 +24,7 @@ class LoginController {
       'password': newLogin.senha,
     };
     var body = json.encode(data);
-    debugPrint(body);
     final response = await http.post(uri, headers: headers, body: body);
-    debugPrint(response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = jsonDecode(response.body);
 
@@ -66,14 +66,30 @@ class LoginController {
         }
         return user;
       } else {
-        throw Exception('Failed to parse user data');
+        // throw Exception('Failed to parse user data');
+        return null;
       }
     } else {
-      debugPrint('StatusCode != 200');
+      return null;
       //   throw Exception(
       //       'Failed to create login. Status code: ${response.statusCode}');
 
       //   // return (user);
     }
+  }
+
+  Future createNewRequestRep(RepModel rep) async {
+    var data = {
+      'name': rep.name,
+      'email': rep.email,
+      'password': rep.password,
+      'nickname': rep.nickname,
+      'nameRep': rep.nameRep,
+    };
+    var body = json.encode(data);
+    final Uri uri = Uri.parse('http://$backendAdress/newRep');
+    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
+    final response = await http.post(uri, headers: headers, body: body);
+    return response.statusCode;
   }
 }

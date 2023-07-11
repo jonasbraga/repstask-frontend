@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:reptask/controllers/user_controller.dart';
-import 'package:reptask/models/user_model.dart';
-import 'package:reptask/utils/user_preferences.dart';
 
-class CreateUserModal extends StatefulWidget {
-  const CreateUserModal({super.key});
+import '../../controllers/login_controller.dart';
+import '../../models/rep_model.dart';
+
+class CreateRepModal extends StatefulWidget {
+  const CreateRepModal({super.key});
 
   @override
-  State<CreateUserModal> createState() => _CreateUserModalState();
+  State<CreateRepModal> createState() => _CreateRepModalState();
 }
 
-class _CreateUserModalState extends State<CreateUserModal> {
+class _CreateRepModalState extends State<CreateRepModal> {
   bool obscurePassword = true;
+  TextEditingController repNameController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
   TextEditingController userNicknameController = TextEditingController();
   TextEditingController userEmailController = TextEditingController();
   TextEditingController userPasswordController = TextEditingController();
-  final _userController = UserController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,8 @@ class _CreateUserModalState extends State<CreateUserModal> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('Novo Morador',
+            const Text('Novo pedido de criação \nde república',
+                softWrap: true,
                 style: TextStyle(
                     color: Color.fromRGBO(0, 0, 0, 0.7),
                     fontSize: 24,
@@ -42,9 +43,21 @@ class _CreateUserModalState extends State<CreateUserModal> {
           height: 55,
           margin: const EdgeInsets.only(top: 12),
           child: TextFormField(
+            controller: repNameController,
+            decoration: const InputDecoration(
+                labelText: 'Nome da República',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder()),
+          ),
+        ),
+        Container(
+          height: 55,
+          margin: const EdgeInsets.only(top: 12),
+          child: TextFormField(
             controller: userNameController,
             decoration: const InputDecoration(
-                labelText: 'Nome',
+                labelText: 'Nome do admin',
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder()),
@@ -56,7 +69,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
           child: TextFormField(
             controller: userNicknameController,
             decoration: const InputDecoration(
-                labelText: 'Apelido',
+                labelText: 'Apelido do admin',
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder()),
@@ -68,7 +81,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
           child: TextFormField(
             controller: userEmailController,
             decoration: const InputDecoration(
-                labelText: 'Email',
+                labelText: 'Email do admin',
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder()),
@@ -81,7 +94,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
             controller: userPasswordController,
             obscureText: obscurePassword,
             decoration: InputDecoration(
-                labelText: "Senha",
+                labelText: "Senha do admin",
                 filled: true,
                 fillColor: Colors.white,
                 border: const OutlineInputBorder(),
@@ -106,7 +119,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
           margin: const EdgeInsets.only(top: 32, bottom: 36),
           child: TextButton(
               onPressed: () {
-                createUserFunction();
+                createRepFunction();
                 Navigator.pop(context);
               },
               style: TextButton.styleFrom(
@@ -116,7 +129,7 @@ class _CreateUserModalState extends State<CreateUserModal> {
                 ),
               ),
               child: const Text(
-                'CRIAR',
+                'SOLICITAR',
                 style: TextStyle(
                     color: Colors.white, letterSpacing: 1.25, fontSize: 16),
               )),
@@ -125,16 +138,13 @@ class _CreateUserModalState extends State<CreateUserModal> {
     );
   }
 
-  void createUserFunction() {
-    final userData = UserModel(
+  void createRepFunction() {
+    final repData = RepModel(
+        nameRep: userNameController.text,
         name: userNameController.text,
         nickname: userNicknameController.text,
         password: userPasswordController.text,
-        email: userEmailController.text,
-        userType: 0,
-        // nomeRep: 'Republicão',
-        repId: UserPreferences.myUser.repId,
-        token: 'a');
-    _userController.createNewUser(userData, UserPreferences.myUser.repId);
+        email: userEmailController.text);
+    LoginController().createNewRequestRep(repData);
   }
 }

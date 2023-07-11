@@ -172,8 +172,9 @@ class _CreateCommentsModalState extends State<CreateCommentsModal> {
             ],
           ),
         ),
-        if (UserPreferences.myUser.userType == 1 ||
-            UserPreferences.myUser.id == widget.taskData.responsavelId)
+        if (!widget.taskData.finished &&
+            (UserPreferences.myUser.userType == 1 ||
+                UserPreferences.myUser.id == widget.taskData.responsavelId))
           Container(
             width: 154,
             height: 36,

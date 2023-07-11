@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reptask/pages/login_page.dart';
 import 'package:reptask/pages/rep_page.dart';
 
 import '../../pages/home_page.dart';
@@ -71,6 +72,16 @@ class DrawerContent extends StatelessWidget {
                 } else {
                   Navigator.of(context).pop();
                 }
+              },
+            ),
+            ListTile(
+              selectedColor: const Color.fromRGBO(70, 4, 138, 1),
+              selectedTileColor: const Color.fromRGBO(151, 151, 151, 0.3),
+              leading: const Icon(Icons.logout),
+              title: const Text("Logout"),
+              onTap: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => const LoginPage()));
               },
             )
           ],

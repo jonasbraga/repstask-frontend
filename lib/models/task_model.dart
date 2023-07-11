@@ -8,17 +8,19 @@ class TaskModel {
   String? responsavelPhoto;
   String? responsavelName;
   int? responsavelId;
+  bool finished;
 
   TaskModel({
     required this.titulo,
     required this.pontos,
     required this.responsavel,
     required this.prazo,
+    required this.finished,
     this.responsavelPhoto,
     this.responsavelName,
     this.responsavelId,
     this.id,
-    this.descricao,
+    this.descricao
   });
 
   // JsonMethods
@@ -31,6 +33,7 @@ class TaskModel {
     final responsavelPhoto = json['photo'];
     final responsavelName = json['name'];
     final responsavelId = json['id'];
+    final finished = json['finished'];
 
     return TaskModel(
         titulo: titulo,
@@ -40,7 +43,8 @@ class TaskModel {
         responsavelPhoto: responsavelPhoto,
         responsavelName: responsavelName,
         responsavelId: responsavelId,
-        responsavel: responsavel);
+        responsavel: responsavel,
+        finished: finished);
   }
 
   Map<String, dynamic> toJson() {

@@ -24,7 +24,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
   final TextEditingController _taskDescriptionController =
       TextEditingController();
 
-  List<UserModel> userList = [];
+  List<UserModel> userList = [UserPreferences.myUser];
 
   @override
   void initState() {
@@ -35,7 +35,8 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
             pontos: 0,
             responsavel: '1',
             prazo: DateTime.now(),
-            descricao: '');
+            descricao: '', 
+            finished: false);
     _taskTitleController.text = taskData.titulo;
     _taskPointsController.text = taskData.pontos.toString();
     _taskDeadlineController.text =
