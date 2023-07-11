@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reptask/controllers/user_controller.dart';
 import 'package:reptask/models/user_model.dart';
+import 'package:reptask/utils/user_preferences.dart';
 
 class CreateUserModal extends StatefulWidget {
   const CreateUserModal({super.key});
@@ -130,10 +131,10 @@ class _CreateUserModalState extends State<CreateUserModal> {
         nickname: userNicknameController.text,
         password: userPasswordController.text,
         email: userEmailController.text,
-        userType: 1,
+        userType: 0,
         // nomeRep: 'Republicão',
-        repId: 1,
+        repId: UserPreferences.myUser.repId,
         token: 'a');
-    _userController.createNewUser(userData, 1);
+    _userController.createNewUser(userData, UserPreferences.myUser.repId);
   }
 }

@@ -81,9 +81,9 @@ class UserController {
             'Bearer $token', // Replace $token with your actual token
       },
     );
+    List<UserModel> results = [];
     if (response.statusCode == 200) {
       var body = jsonDecode(response.body);
-      List<UserModel> results = [];
       if (body.length > 0) {
         body.forEach((userJson) {
           UserModel user = UserModel(
@@ -109,46 +109,10 @@ class UserController {
       }
       return results;
     } else {
-      throw Exception('Failed to load User');
+      results.add(UserPreferences.myUser);
+      return results;
     }
   }
-
-  // Future getUsers(UserModel user) async {
-  //   final address = await getIpAddress();
-
-  //   final response = await http.get(
-  //     Uri.parse('http://$backendAdress/users/2'),
-  //     headers: {'Origin': address},
-  //   );
-  //   if (response.statusCode == 200) {
-  //     var body = jsonDecode(response.body);
-
-  //     if (body != null) {
-  //       UserModel user = UserModel(
-  //         id: body['id'],
-  //         name: body['name'],
-  //         email: body['email'],
-  //         imagePath: body['photo'],
-  //         userType: body['user_type'],
-  //         nickname: body['nickname'],
-  //         password: body['password'],
-  //         repId: body['reps_id'],
-  //         nomeRep: body['nomeRep'],
-  //         userPoints: body['userPoints'],
-  //         userDoneTasks: body['userDoneTasks'],
-  //         token: token,
-  //         // isDarkMode: body['isDarkMode'],
-  //       );
-  //       if (user.imagePath == null) {
-  //         final userPrefer = UserPreferences.myUser;
-  //         user.imagePath = userPrefer.imagePath;
-  //       }
-  //       return user;
-  //     } else {
-  //       throw Exception('Failed to load User');
-  //     }
-  //   }
-  // }
 
   Future updateUser(UserModel user) async {
     final Uri uri = Uri.parse('http://$backendAdress/users/${user.id}');

@@ -24,7 +24,7 @@ class _CreateTaskModalState extends State<CreateTaskModal> {
   final TextEditingController _taskDescriptionController =
       TextEditingController();
 
-  List<UserModel> userList = [];
+  List<UserModel> userList = [UserPreferences.myUser];
 
   @override
   void initState() {

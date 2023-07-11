@@ -160,18 +160,29 @@ class _LoginPageState extends State<LoginPage> {
       UserModel? response = await LoginController().createLogin(login);
 
       if (response != null) {
-        UserModel user = response;
-        debugPrint(user.toString());
         Navigator.of(context).push(
           MaterialPageRoute(
               builder: (context) => const MyHomePage(
                     title: 'Tarefas',
                   )),
         );
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Aviso'),
+            content: const Text('Dados Incorretos'),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
       }
     } catch (e) {
-      debugPrint('Failed to login: $e');
-      // handle the error appropriately
+      // debugPrint('Failed to login: $e');
     }
   }
 }
