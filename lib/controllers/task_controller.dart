@@ -133,7 +133,7 @@ class TaskController {
               id: taskJson['task_id'],
               responsavelId: taskJson['id'],
               responsavelPhoto: taskJson['photo'],
-              responsavelName: taskJson['name'], 
+              responsavelName: taskJson['name'],
               finished: taskJson['finished']);
 
           results.add(task);
@@ -141,9 +141,10 @@ class TaskController {
       }
       return results;
     } else {
+      return [];
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Failed to load album');
+      // throw Exception('Failed to load album');
     }
   }
 }
