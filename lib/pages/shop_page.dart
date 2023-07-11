@@ -25,12 +25,14 @@ class _ShopPageState extends State<ShopPage> {
       body: Column(
         children: const [Expanded(child: RewardsList())],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: UserPreferences.myUser.userType == 1 ?
+      FloatingActionButton(
         onPressed: () {
           showModal(context, const CreateRewardModal());
         },
         child: const Icon(Icons.add),
-      ),
+      ):
+      null,
     );
   }
 }
