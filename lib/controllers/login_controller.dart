@@ -22,9 +22,7 @@ class LoginController {
       'password': newLogin.senha,
     };
     var body = json.encode(data);
-    debugPrint(body);
     final response = await http.post(uri, headers: headers, body: body);
-    debugPrint(response.statusCode.toString());
     if (response.statusCode == 200) {
       var body = jsonDecode(response.body);
 
@@ -66,10 +64,11 @@ class LoginController {
         }
         return user;
       } else {
-        throw Exception('Failed to parse user data');
+        // throw Exception('Failed to parse user data');
+        return null;
       }
     } else {
-      debugPrint('StatusCode != 200');
+      return null;
       //   throw Exception(
       //       'Failed to create login. Status code: ${response.statusCode}');
 
