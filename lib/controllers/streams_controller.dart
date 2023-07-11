@@ -7,4 +7,4 @@ StreamController<TaskFilterModel> refreshTaskPageStream =
     StreamController.broadcast();
 StreamController<void> refreshTaskDetailsStream = StreamController.broadcast();
 StreamController refreshUserPageStream = StreamController.broadcast();
-StreamController refreshRewardsPageStream = StreamController.broadcast();
+StreamController<void> refreshRewardsPageStream = StreamController.broadcast();

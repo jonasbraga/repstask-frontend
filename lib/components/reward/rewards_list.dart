@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:reptask/components/reward/buy_reward_dialog.dart';
 import 'package:reptask/components/reward/delete_reward_dialog.dart';
@@ -19,16 +21,23 @@ class RewardsList extends StatefulWidget {
 class _RewardsListState extends State<RewardsList> {
   RewardController rewardController = RewardController();
   List<RewardModel> rewardList = [];
+  late StreamSubscription subscription;
 
   @override
   void initState() {
     super.initState();
-    refreshUserPageStream.stream.listen((event) {
+    subscription = refreshRewardsPageStream.stream.listen((event) {
       refreshPage();
     });
     rewardController
         .getRewardsList()
         .then((rewardResults) => setState(() => rewardList = rewardResults));
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
   }
 
   @override

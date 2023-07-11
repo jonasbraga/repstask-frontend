@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reptask/controllers/reward_controller.dart';
 import 'package:reptask/models/reward_model.dart';
 
 class BuyRewardDialog extends StatefulWidget {
@@ -10,6 +11,8 @@ class BuyRewardDialog extends StatefulWidget {
 }
 
 class _BuyRewardDialogState extends State<BuyRewardDialog> {
+  RewardController rewardController = RewardController();
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -31,6 +34,7 @@ class _BuyRewardDialogState extends State<BuyRewardDialog> {
             style: TextStyle(color: Colors.green),
           ),
           onPressed: () {
+            rewardController.buyReward(widget.rewardData);
             Navigator.pop(context);
           },
         )
