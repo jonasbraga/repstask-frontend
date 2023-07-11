@@ -23,7 +23,7 @@ class _ShopPageState extends State<ShopPage> {
         child: DrawerContent(),
       ),
       body: Column(
-        children: const [Expanded(child: RewardsList(isAdmUser: true))],
+        children: const [Expanded(child: RewardsList())],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
