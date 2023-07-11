@@ -133,7 +133,8 @@ class TaskController {
               id: taskJson['task_id'],
               responsavelId: taskJson['id'],
               responsavelPhoto: taskJson['photo'],
-              responsavelName: taskJson['name']);
+              responsavelName: taskJson['name'], 
+              finished: taskJson['finished']);
 
           results.add(task);
         });
