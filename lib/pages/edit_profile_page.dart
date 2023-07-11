@@ -88,8 +88,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     File(xImage.path).readAsBytesSync();
                                 base64Image = base64Encode(imageBytes);
 
-                                debugPrint(base64Image.toString());
-
                                 setState(() => UserPreferences
                                     .myUser.imagePath = base64Image!);
                               }
@@ -200,9 +198,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
       );
 
   void updateUser(UserModel user) async {
+    userController.updateUser(user);
+
     final String currentPassword = _userPasswordController.text;
     final String newPassword = _userNewPasswordController.text;
+    final String newNickname = _userNicknameController.text;
+    final String newName = _userNameController.text;
+    final String newImage = UserPreferences.myUser.imagePath ?? '';
 
+    if (currentPassword.isEmpty &&
+        newPassword.isEmpty &&
+        (newNickname.isNotEmpty || newName.isNotEmpty || newImage.isNotEmpty)) {
+      userController.updateUser(user);
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Sucesso'),
+          content: const Text('Dados Alterados com sucesso'),
+          actions: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
     if (currentPassword.isNotEmpty && newPassword.isEmpty) {
       showDialog(
         context: context,
