@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _senhaController = TextEditingController();
   // final loginController = TextEditingController();
   final TextEditingController _loginController = TextEditingController();
-
+  bool _showPassword = false;
   @override
   void initState() {
     super.initState();
@@ -53,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Divider(),
                 const Divider(),
                 TextFormField(
+                  key: const ValueKey('email_field'),
                   autofocus: true,
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -73,15 +74,28 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const Divider(),
                 TextFormField(
+                  key: const ValueKey('password_field'),
                   controller: _senhaController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
+                  obscureText:
+                      !_showPassword, // Usa o estado para controlar a visibilidade da senha
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
                     labelText: "Senha",
-                    labelStyle: TextStyle(color: Colors.black, fontSize: 20),
+                    labelStyle:
+                        const TextStyle(color: Colors.black, fontSize: 20),
                     fillColor: Colors.white,
                     filled: true,
-                    prefixIcon: Icon(Icons.key),
+                    prefixIcon: const Icon(Icons.key),
+                    suffixIcon: GestureDetector(
+                      child: Icon(_showPassword
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onTap: () {
+                        setState(() {
+                          _showPassword = !_showPassword;
+                        });
+                      },
+                    ),
                   ),
                   validator: (senha) {
                     if (senha == null || senha.isEmpty) {
@@ -92,6 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const Divider(),
                 SizedBox(
+                  key: const ValueKey('login_button'),
                   width: 124,
                   height: 36,
                   child: TextButton(

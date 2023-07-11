@@ -29,6 +29,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  integration_test:
+    sdk: flutter
 
   animated_theme_switcher: ^2.0.0
   file_picker: ^5.2.5
