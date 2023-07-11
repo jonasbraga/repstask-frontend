@@ -7,12 +7,12 @@ import 'package:reptask/controllers/reward_controller.dart';
 
 import '../../controllers/streams_controller.dart';
 import '../../models/reward_model.dart';
+import '../../utils/user_preferences.dart';
 import '../bottom_modal.dart';
 import 'create_reward_modal.dart';
 
 class RewardsList extends StatefulWidget {
-  const RewardsList({super.key, required this.isAdmUser});
-  final bool isAdmUser;
+  const RewardsList({super.key});
 
   @override
   State<RewardsList> createState() => _RewardsListState();
@@ -61,7 +61,7 @@ class _RewardsListState extends State<RewardsList> {
                 spacing: 12,
                 alignment: WrapAlignment.center,
                 children: [
-                  if (widget.isAdmUser)
+                  if (UserPreferences.myUser.userType == 1)
                     StatefulBuilder(builder: (context, setState) {
                       return PopupMenuButton<String>(
                           onSelected: (value) {
