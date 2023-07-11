@@ -77,8 +77,8 @@ class _CreateRewardModalState extends State<CreateRewardModal> {
           child: TextButton(
               onPressed: () {
                 widget.rewardDataSended != null
-                    ? criarReward()
-                    : updateReward();
+                    ? updateReward()
+                    : criarReward();
                 Navigator.pop(context);
               },
               style: TextButton.styleFrom(
@@ -112,8 +112,10 @@ class _CreateRewardModalState extends State<CreateRewardModal> {
         pontos: int.tryParse(rewardPointsController.text) ?? 0,
         titulo: rewardNameController.text));
   }
+
   updateReward() {
-    RewardController().createNewReward(RewardModel(
+    RewardController().updateReward(RewardModel(
+        id: rewardData.id,
         pontos: int.tryParse(rewardPointsController.text) ?? 0,
         titulo: rewardNameController.text));
   }
